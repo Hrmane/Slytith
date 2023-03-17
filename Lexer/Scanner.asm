@@ -23,6 +23,7 @@ _NextChar:
 	mov eax, [InPointer] ;The Position pointer we need to grab the charater out of the string
 	inc eax
 	mov [InPointer], eax
+	ret
 
 
 _IterScanner:
@@ -53,7 +54,9 @@ _IterScanner:
 	mov rcx, [AssertionBuffer]
 	mov rax, Cluster_Token
 	cmp rcx, rax
-	je
+	je	_DefineKeyword
+
+	jmp _IterScanner
 
 
 
@@ -70,9 +73,9 @@ section .data
 section .bss
 	TokenBuffer resq 164
 	InputBuffer resq 128
-	AssertionTokeb resb 16
+	AssertionBuffer resb 16
 	FileName resb 64
 	FD resb 32;FileDes
-	Pos
+	
 
 	
