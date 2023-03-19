@@ -3,7 +3,7 @@
 %include "Slytith/Lexer/Tokens.asm"
 section .text
 
-_FileReader:
+Lex:
 	;Open the file	
 	mov rax, 2
 	mov rdi, filename
@@ -18,6 +18,8 @@ _FileReader:
 	mov rdx, 1024
 	syscall
 	;ret
+
+	jmp _IterScanner
 
 _NextChar:
 	mov eax, [InPointer] ;The Position pointer we need to grab the charater out of the string
@@ -73,9 +75,9 @@ section .data
 section .bss
 	TokenBuffer resq 164
 	InputBuffer resq 128
-	AssertionBuffer resb 16
+	AssertionBuffer resb 64
 	FileName resb 64
 	FD resb 32;FileDes
-	
+	CurrState resb 16
 
 	

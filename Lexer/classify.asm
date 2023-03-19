@@ -84,7 +84,7 @@ section .text
 					mov [TokenBuffer], rcx
 					ret
 		
-	Bit:
+	KBit:
 					mov rcx, TYPE_BIT
 					mov [TokenBuffer], rcx
 					ret
@@ -94,7 +94,7 @@ section .text
 					mov [TokenBuffer], rcx
 					ret
 		
-	KWord:
+	KWord:Slytith
 					mov rcx, TYPE_WORD
 					mov [TokenBuffer], rcx
 					ret
@@ -141,12 +141,12 @@ section .text
 				mov rcx, T_RETURN
 				mov [TokenBuffer], rcx
 				ret
-	Repeat:
+	KRepeat:
 				mov rcx, T_REPEAT
 				mov [TokenBuffer], rcx
 				ret
 	
-	_LoopCall:
+	LoopCall:
 				mov rcx, T_LOOP
 				mov [TokenBuffer], rcx
 				ret
@@ -160,7 +160,29 @@ section .text
 				mov rcx, T_FOREACH
 				mov [TokenBuffer], rcx
 				ret
-	_DefineKeyword: ; jumped to by _IterScanner
+
+	Modulo:
+				mov rcx, T_FOREACH
+				mov [TokenBuffer], rcx
+				ret
+	Division:
+				mov rcx, T_FOREACH
+				mov [TokenBuffer], rcx
+				ret	
+
+	Subtraction:
+				mov rcx, T_FOREACH
+				mov [TokenBuffer], rcx
+				ret
+	Addition:
+				mov rcx, T_FOREACH
+				mov [TokenBuffer], rcx
+				ret
+	Multiply:
+				mov rcx, T_FOREACH
+				mov [TokenBuffer], rcx
+				ret
+_DefineKeyword: ; jumped to by _IterScanner
 
 		mov rcx, [AssertionBuffer]
 
@@ -210,107 +232,135 @@ section .text
 		
 		mov rax, K_Byte
 		cmp rcx, rax
-		je K
+		je KByte
 
 		
-		mov rax, K_Mute
+		mov rax, K_Char
 		cmp rcx, rax
-		je Muteable
+		je Char
 
-		mov rax, K_Mute
+		mov rax, K_Snum
 		cmp rcx, rax
-		je Muteable
+		je Snum
 
 		
-		mov rax, K_Mute
+		mov rax, K_Int
 		cmp rcx, rax
-		je Muteable
+		je Kint
 
-		mov rax, K_Mute
+		mov rax, K_Lnum
 		cmp rcx, rax
-		je Muteable
+		je Lnum
 
-		mov rax, K_Mute
+		mov rax, K_Fltt
 		cmp rcx, rax
-		je Muteable
+		je Fltt
 
 
-		mov rax, K_Mute
+		mov rax, K_Flsf
 		cmp rcx, rax
-		je Muteable
+		je Flsf
 
 
-		mov rax, K_Mute
+		mov rax, K_Bool
 		cmp rcx, rax
-		je Muteable
+		je Bool
 
 	
-		mov rax, K_Mute
+		mov rax, K_String
 		cmp rcx, rax
-		je Muteable
+		je String
 
 
-		mov rax, K_Mute
+		mov rax, K_nit
 		cmp rcx, rax
-		je Muteable
+		je KBit
 
-		mov rax, K_Mute
+		mov rax, K_nibble
 		cmp rcx, rax
-		je Muteable
+		je Nibble
 
 
-		mov rax, K_Mute
+		mov rax, K_Dword
 		cmp rcx, rax
-		je Muteable
+		je KDword
 
 
-		mov rax, K_Mute
+		mov rax, K_Qword
 		cmp rcx, rax
-		je Muteable
+		je KQword
 
 
-		mov rax, K_Mute
+		mov rax, K_Store
 		cmp rcx, rax
-		je Muteable
+		je Store
 
 
-		mov rax, K_Mute
+		mov rax, K_Ict
 		cmp rcx, rax
-		je Muteable
+		je Ict
 
-		mov rax, K_Mute
+		mov rax, K_Altern
 		cmp rcx, rax
-		je Muteable
+		je Altern
 
 	
-		mov rax, K_Mute
+		mov rax, K_Dec
 		cmp rcx, rax
-		je Muteable
+		je Declare
 
 
-		mov rax, K_Mute
+		mov rax, K_Add
 		cmp rcx, rax
-		je Muteable
+		je Addition
 
 
-		mov rax, K_Mute
+		mov rax, K_Subt
 		cmp rcx, rax
-		je Muteable
+		je Subtraction
 
-		mov rax, K_Mute
+		mov rax, K_Div
 		cmp rcx, rax
-		je Muteable
+		je Division
 
 
-		mov rax, K_Mute
+		mov rax, K_Sync
 		cmp rcx, rax
-		je Muteable
+		je Sync
 
-		mov rax, K_Mute
+		mov rax, K_Mod
 		cmp rcx, rax
-		je Muteable
+		je KModulo
 
-				
+		mov rax, K_Sysend
+		cmp rcx, rax
+		je Sysend
+
+		mov rax, K_Ret
+		cmp rcx, rax
+		je Return
+
+		mov rax, K_Repeat
+		cmp rcx, rax
+		je KRepeat
+
+		mov rax, K_Loop
+		cmp rcx, rax
+		je KLoop
+
+		mov rax, K_For
+		cmp rcx, rax
+		je KFor
+
+		mov rax, K_Fore
+		cmp rcx, rax
+		je KFore
+
+		mov rax, K_Mult
+		cmp rcx, rax
+		je Multiply
+
+		
 
 		xor rcx,rcx ; clear the buffer
 		ret	
