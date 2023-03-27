@@ -8,14 +8,18 @@ section .data
 
 section .text
 
-    global _start:
+    global _Start
 
 
-    _start:
+    _Start:
         mov rax, 1
         mov rdi, 1
         mov rsi, Start_Comp_Msg
         mov rdx, Msg_Comp_Len
         syscall
 
-        call
+        call Lex
+
+        mov rax, 60
+        xor rdi, rdi
+        syscall

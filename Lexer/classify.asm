@@ -3,6 +3,159 @@
 %include "Slytith/Lexer/Scanner.asm"
 section .text
 
+;/////////////////////////////////////////////////////////////////
+;								OPERATORS
+;/////////////////////////////////////////////////////////////////
+_OpFound:
+	;clear string after
+	mov bl, [Whitespace] 
+	mov al, [CurrentChar]
+	cmp al, bl
+	je _NextChar
+
+		mov rax, O_TO
+		cmp rcx, rax
+		je ToSign
+
+		
+		mov rax, O_DefMacro
+		cmp rcx, rax
+		je DefMacro
+
+
+		
+		mov rax, O_LessThan
+		cmp rcx, rax
+		je LessThan
+
+		
+		mov rax, O_GreaterThan
+		cmp rcx, rax
+		je GreaterThan
+
+
+
+		mov rax, O_DecimalPoint
+		cmp rcx, rax
+		je DecPoint
+
+		
+		mov rax, O_Semicolon
+		cmp rcx, rax
+		je Semicolon
+
+
+
+		mov rax, O_EqualSign
+		cmp rcx, rax
+		je Equal
+
+	
+		mov rax, O_Tilde
+		cmp rcx, rax
+		je Tilde
+
+
+		
+		mov rax, O_MemPointer
+		cmp rcx, rax
+		je MemPointer
+
+		
+		mov rax, O_ArrayOpen
+		cmp rcx, rax
+		je ArrayLBrack
+
+		mov rax, O_ArrayClose
+		cmp rcx, rax
+		je ArrayRBrack
+
+
+	xor al, al
+	jmp _IterScanner
+
+
+
+	ArgsArrow:
+			mov rcx, T_ARGARROW
+			mov [TokenBuffer], rcx
+			ret
+
+	FuncOpen:
+			mov rcx, T_OPEN_FUNC
+			mov [TokenBuffer], rcx
+			ret
+
+	FuncClose:
+			mov rcx, T_CLOSE_FUNC
+			mov [TokenBuffer], rcx
+			ret
+			
+    DirDiv:
+			mov rcx, T_DIR_DIV
+			mov [TokenBuffer], rcx
+			ret
+
+	DefMacro:
+			mov rcx, T_MACRO_DEFINE
+			mov [TokenBuffer], rcx
+			ret
+
+	LessThan:
+			mov rcx, T_LESS
+			mov [TokenBuffer], rcx
+			ret
+			
+    
+    GreaterThan:
+			mov rcx, T_GREATER
+			mov [TokenBuffer], rcx
+			ret
+
+	DecPoint:
+			mov rcx, T_DECIMAL_POINT
+			mov [TokenBuffer], rcx
+			ret
+
+	Semicolon:
+			mov rcx, T_SEMICOLON
+			mov [TokenBuffer], rcx
+			ret
+			
+    Equal:
+			mov rcx, T_EQUALS
+			mov [TokenBuffer], rcx
+			ret
+
+	Tilde:
+			mov rcx, T_TILDE
+			mov [TokenBuffer], rcx
+			ret
+
+
+
+	MemPointer:
+			mov rcx, T_MEM_POINTER
+			mov [TokenBuffer], rcx
+			ret
+	ToSign:
+			mov rcx, T_TO
+			mov [TokenBuffer], rcx
+			ret
+	ArrayLBrack:
+			mov rcx, T_ARRAY_OPEN
+			mov [TokenBuffer], rcx
+			ret
+	ArrayRBrack:
+			mov rcx, T_ARRAY_CLOSE
+			mov [TokenBuffer], rcx
+			ret
+
+			
+    
+;////////////////////////////////////////////////////////////////////
+;								KEYWORDS
+;////////////////////////////////////////////////////////////////////
 	Muteable:
 		mov rcx, T_MUTE
 		mov [TokenBuffer], rcx
@@ -22,20 +175,7 @@ section .text
 			mov [TokenBuffer], rcx
 			ret
 
-	ArgsArrow:
-			mov rcx, T_ARGARROW
-			mov [TokenBuffer], rcx
-			ret
-
-	FuncOpen:
-			mov rcx, T_OPEN_FUNC
-			mov [TokenBuffer], rcx
-			ret
-
-	FuncClose:
-			mov rcx, T_CLOSE_FUNC
-			mov [TokenBuffer], rcx
-			ret
+	
 
 	Element:
 			mov rcx, T_ELEMENT
@@ -94,7 +234,7 @@ section .text
 					mov [TokenBuffer], rcx
 					ret
 		
-	KWord:Slytith
+	KWord:
 					mov rcx, TYPE_WORD
 					mov [TokenBuffer], rcx
 					ret
@@ -182,6 +322,31 @@ section .text
 				mov rcx, T_FOREACH
 				mov [TokenBuffer], rcx
 				ret
+
+
+	LessEqual:
+			mov rcx, T_EQUAL_LESS
+			mov [TokenBuffer], rcx
+			ret
+			
+    
+    GreaterEqual:
+			mov rcx, T_EQUAL_GREATER
+			mov [TokenBuffer], rcx
+			ret
+
+
+	EqualTo:
+			mov rcx, T_EQUAL_TO
+			mov [TokenBuffer], rcx
+			ret
+			
+    
+    NotEqual:
+			mov rcx, T_NOT_EQUAL
+			mov [TokenBuffer], rcx
+			ret
+
 _DefineKeyword: ; jumped to by _IterScanner
 
 		mov rcx, [AssertionBuffer]

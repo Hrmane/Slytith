@@ -37,7 +37,7 @@ _IterScanner:
 	;obtaining the characters 
 	mov eax, [InPointer]
 	mov bl, byte [rsi + eax] ; starts at the index of 0
-
+	mov [CurrentChar], bl
 	;Increment
 	call _NextChar
 	
@@ -62,14 +62,7 @@ _IterScanner:
 
 
 
-	
-
-_OpFound:
-	;clear string after
-	
-
-	jmp _IterScanner
-section .data
+section .data 
 	InPointer db 0
 
 section .bss
@@ -78,6 +71,8 @@ section .bss
 	AssertionBuffer resb 64
 	FileName resb 64
 	FD resb 32;FileDes
+	currentChar resb 1
+
 	CurrState resb 16
 
 	

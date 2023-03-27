@@ -33,24 +33,11 @@ section .data
     ;General Purpose
     ;**************************************************
  
-      T_PERIOD db'PERIOD'
-      T_SEMICOLON db'SEMICOLON'
-      T_OPEN_PAREN db'OPEN-PAREN'
-      T_CLOSE_PAREN db'CLOSE-PAREN'
-      T_OPEN_FUNC db'OPEN-FUNC'
-      T_CLOSE_FUNC db'CLOSE-FUNC'
-      T_ARRAY_OPEN db 'ARRAY_OPEN'
-      T_ARRAY_CLOSE db 'ARRAY_CLOSE'
+      
       T_TO db 'TO'      
       T_ASSIGNMENT db'ASSIGN'
       T_DECLARE db'DECLARE'
       T_DIRDIV db'DIR-DIV'
-      T_LNCOM db'SINGLE-LN-COMMENT'
-      T_MULTLNCOM_START db'MLN-COMMENT-S'
-      T_MULTLNCOM_END db'MLN-COMMENT-E'
-      T_COMMA db 'COMMA'
-      T_EQUALS db 'EQUAL-SIGN'
-      T_TILDA db "TILDE"
       T_ELEMENT db "ELEMENT(FUNC)"
       T_RES db 'RES'
       T_MUTE db 'MUTE'
@@ -67,7 +54,27 @@ section .data
       T_LOOP db 'LOOP'
       T_FOR db 'FOR'
       T_FOREACH db 'FOREACH'
-      
+
+    ;*******************************************************
+    ;                       OPERATORS
+    ;*******************************************************
+      T_DIR_DIV db 'DIR-DIV'
+      T_MACRO_DEFINE db 'DEF-MACRO'
+      T_MEM_POINTER db 'POINTER'
+      T_DECIMAL_POINT db'FLOAT-POINT'
+      T_SEMICOLON db'SEMICOLON'
+      T_OPEN_PAREN db'OPEN-PAREN'
+      T_CLOSE_PAREN db'CLOSE-PAREN'
+      T_OPEN_FUNC db'OPEN-FUNC'
+      T_CLOSE_FUNC db'CLOSE-FUNC'
+      T_ARRAY_OPEN db 'ARRAY_OPEN'
+      T_ARRAY_CLOSE db 'ARRAY_CLOSE'
+      T_LNCOM db'SINGLE-LN-COMMENT'
+      T_MULTLNCOM_START db'MLN-COMMENT-S'
+      T_MULTLNCOM_END db'MLN-COMMENT-E'
+      T_COMMA db 'COMMA'
+      T_EQUALS db 'EQUAL-SIGN'
+      T_TILDA db "TILDE"
     
     ;******************************************************
     ; Data types
@@ -111,9 +118,10 @@ section .data
 ;//////////////////////////////////////////////////////////////////////////////////////////////////////
 ;***************************************Representation of the keywords*********************************
   Cluster_Token db ,"dword","bit","nibble","word","qword","res",'mute','immute','vset','notype','->','<<','>>','element', 'byte','char','snum','int','lnum','fltt','flst','bool','str','store','ict','altern','dec','add','subt','div','sync','assert','sysend','ret','repeat','loop','for'
-  Operators db '|','&','>','<','.',';','(',')','=','~','+','-','%','!','@','-', '[',']','{','}'
+  Operators db '|','&','>','<','.',';','=','~','+','-','%','!','@', '[',']', " ", '/', '^'
   Digits db '1','2','3','4','5','6','7','8','9','0'
-  Forebidden db ' ', '@', '/@','@/' ; includes whitespaces and comments
+  ;Forebidden db ' ', '@', '/@','@/' ; includes whitespaces and comments
+  Whitespace db ' '
 ;//////////////////////////////////////////////////////////////////////////////////////////////
 ;										Token Declaration
 ;//////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,5 +164,27 @@ K_Loop db "loop"
 K_For db "for"
 K_Fore db "foreach"
 K_Mul db "mul"
+;*********************************
+;               Operators
+;**********************************
+O_TO db "|"
+O_DefMacro db "&"
+O_LessThan db "<"
+O_GreaterThan db ">"
+O_DecimalPoint db "."
+O_Semicolon db ';'
+O_EqualSign db '='
+O_Tilde db '~'
+O_DirDiv db '^'
+O_Addition db '+'
+O_Subtraction db '-'
+O_Divide db '/'
+O_Modulo db '%'
+O_MemPointer db '@'
+O_ArrayOpen db '['
+O_ArrayClose db ']'
+
+
+
 
 

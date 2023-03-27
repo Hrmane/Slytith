@@ -2,10 +2,10 @@
 element Main -> str Buffer<< 
 	dec str variable = "";
 
-	ict(str == Buffer)<<
-		print("Right");
+	ict -> str == Buffer <<
+		print -> "Right";
 	>>altern<<
-		print("Wrong");
+		print -> "Wrong";
 	>>
 
 >>

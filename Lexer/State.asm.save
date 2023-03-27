@@ -1,0 +1,14 @@
+section .data
+    txt db "Out putt"
+
+section .text
+  
+
+
+    StateString:
+	
+       
+section .bss
+
+
+  
