@@ -1,23 +1,43 @@
+%include "Slytith/Lexer/Scanner.asm"
+
 section .text
 
     CLI:
+        mov rdp, rsp
+
+        mov rsi, [rdp + 16]
+        mov [FileName], rsi
+
+        ;open the art file
+        mov rax, 2
+        mov rdi, ArtFileName
+        mov rsi, 0
+        mov rdx, 0
+        syscall
+        ;read file
+        mov qword [FD], rax
+        mov rax,0
+	    mov rdi,qword [FD]
+	    mov rsi, art
+	    mov rdx, 100
+	    syscall
+        ;print the ascii art
         mov rax, 1
         mov rdi, 1
-        mov rsi, msg
-        mov rdx, 19
+        mov rsi, art
+        mov rdx, 100
         syscall
 
-        mov rax, 0
-        mov rdi, 0
-        mov rsi, buffer
-        mov rdx, 1000
-        syscall
+        
 
+
+       
 
         
 
 
 section .bss
-    buffer resb 1000 
+    ArtFileName resb 64
+    fd resb 8
+    art resb 100 
 section. data
-    msg: db ""
