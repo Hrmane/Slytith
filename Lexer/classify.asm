@@ -121,8 +121,9 @@ _OpFound:
 			mov rcx, T_SEMICOLON
 			mov [TokenBuffer], rcx
 
-			
-
+			mov rax, [LineCount]
+			inc rax
+			mov [LineCount], rax
 			ret
 			
     Equal:
@@ -534,7 +535,7 @@ _DefineKeyword: ; jumped to by _IterScanner
 		ret	
 		
 	
-	_DefineOperator:
+
 
 
 	

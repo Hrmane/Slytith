@@ -39,7 +39,7 @@ _IterScanner:
 	mov bl, byte [rsi + eax] ; starts at the index of 0
 	mov [CurrentChar], bl
 	;Increment
-	call _NextChar
+	
 	
 	;Check if pointer is at limit of buffer
 	mov eax,[Position]
@@ -58,6 +58,8 @@ _IterScanner:
 	cmp rcx, rax
 	je	_DefineKeyword
 
+	call _NextChar
+	
 	jmp _IterScanner
 
 
