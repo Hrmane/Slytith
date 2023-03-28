@@ -30,7 +30,7 @@ _NextChar:
 
 _IterScanner:
 
-	mov rsi, [InputBuffer] ; source of buffer
+	mov rsi, [InputBuffer] ;source of buffer
 	
 	
 	
@@ -64,7 +64,7 @@ _IterScanner:
 
 section .data 
 	InPointer db 0
-
+	LineCount db 1
 section .bss
 	TokenBuffer resq 164
 	InputBuffer resq 128
@@ -72,6 +72,7 @@ section .bss
 	FileName resb 64
 	FD resb 32;FileDes
 	currentChar resb 1
+
 
 	CurrState resb 16
 

@@ -120,6 +120,9 @@ _OpFound:
 	Semicolon:
 			mov rcx, T_SEMICOLON
 			mov [TokenBuffer], rcx
+
+			
+
 			ret
 			
     Equal:
