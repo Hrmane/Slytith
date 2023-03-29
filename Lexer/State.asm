@@ -7,7 +7,6 @@ section .data
     IntLiteralToken: db "INT: "
     dqm db "\""
 
-
 section .text
    
     StringState:

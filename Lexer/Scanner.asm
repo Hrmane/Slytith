@@ -27,8 +27,7 @@ Lex:
 	mov rsi, InputBuffer
 	mov rdx, 1024
 	syscall
-	;ret
-
+	
 	jmp _IterScanner
 
 _NextChar:
