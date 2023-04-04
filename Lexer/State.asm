@@ -1,13 +1,19 @@
 %include "Slytith/Lexer/Scanner.asm"
+%include "Slytith/Lexer/Tokens.asm"
+
 section .bss
     StringBuffer resq 1000
     IntBuffer resq 100
 section .data
     StringLiteralToken: db "STRING: "
     IntLiteralToken: db "INT: "
+    FloatToken db "FLOAT: "
     dqm db "\""
 
 section .text
+
+    ;All of the code below are to be called after a specific cindition is met
+    ;e.g, 
    
     StringState:
         ;To be called after a double quotation is found and will stop till another is found
@@ -35,20 +41,48 @@ section .text
 
 
 
+    AddDecPoint:
+        mov al, byte [O_DecimalPoint]
+        mov [IntBuffer], al
+        jmp FloatState
+    
+    FloatState:
+       
+        mov rcx, [InPointer]
+        mov rdx, [InputBuffer]
+        mov bl, byte[rdx + rcx]
+        call _NextChar
+        cmp bl, digits
+        jne AddFloatToBuffer
+
+        mov [IntBuffer], bl
+        jmp FloatStat
+
+    AddFloatToBuffer:
+        mov rcx, [FloatToken]
+        mov [TokenBuffer], rcx
+        mov rax, [IntBuffer]
+        mov [TokenBuffer], rax
+        
+
     IntState:
         mov rcx, [InPointer]
         mov rdx, [InputBuffer]
         mov bl, byte[rdx + rcx]
-        mov [IntLiteralToken], bl
+        mov [IntBuffer], bl
         call _NextChar
         mov al, Digits
         cmp al, bl
         je IntState
 
+        mov al, O_DecimalPoint
+        cmp al, bl
+        je AddDecPoint
+
         jmp AddintToBuffer
 
 
-    AddIntToBuffer:
+    AddNumberToBuffer: ; used for both floats and ints
         mov rcx, word[IntLiteralToken]
         mov [TokenBuffer], rcx
         mov rax, [IntBuffer]

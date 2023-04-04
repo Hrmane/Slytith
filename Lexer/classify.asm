@@ -529,6 +529,15 @@ _DefineKeyword: ; jumped to by _IterScanner
 		cmp rcx, rax
 		je Multiply
 
+		mov rax, K_True
+		cmp rcx, rax
+		je KTrue
+
+		mov rax, K_False
+		cmp rcx, rax
+		je KFalse
+
+
 		
 
 		xor rcx,rcx ; clear the buffer

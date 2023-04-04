@@ -12,7 +12,7 @@ section .text
 
 
     _Start:
-        call CLI
+        call ArgumentProcessor
         mov rax, 1
         mov rdi, 1
         mov rsi, Start_Comp_Msg

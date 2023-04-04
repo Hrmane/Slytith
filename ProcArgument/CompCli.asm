@@ -2,7 +2,7 @@
 
 section .text
 
-    CLI:
+    ArgumentProcessor:
         mov rdp, rsp
 
         mov rsi, [rdp + 16]

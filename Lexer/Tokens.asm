@@ -164,6 +164,8 @@ K_Loop db "loop"
 K_For db "for"
 K_Fore db "foreach"
 K_Mul db "mul"
+K_True db "true"
+K_False db "false"
 ;*********************************
 ;               Operators
 ;**********************************
