@@ -1,5 +1,4 @@
 ; Tokens
-
 section .data
     ;**********************************************
     ;Arithmetic operations
