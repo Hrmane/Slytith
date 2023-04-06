@@ -1,6 +1,6 @@
 ;classify  
-%include "Slytith/Lexer/Tokens.asm"
-%include "Slytith/Lexer/Scanner.asm"
+;%include "Lexer/Tokens.asm"
+;%include "Lexer/Scanner.asm"
 section .text
 
 ;/////////////////////////////////////////////////////////////////

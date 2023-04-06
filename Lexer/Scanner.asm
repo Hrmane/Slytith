@@ -1,31 +1,32 @@
 ;Scanner
 
-%include "Slytith/Lexer/Tokens.asm"
-%include "Slytith/Lexer/State.asm"
+%include "Lexer/Tokens.asm"
+%include "Lexer/State.asm"
+%include "Lexer/classify.asm"
 
 section .text
 
-%macro print 2
-	mov rax, 1
-	mov rdi ,1
-	mov rsi, %1
-	mov rdx, %2
-	syscall
-	%endmacro
+
 
 Lex:
 	;Open the file	
 	mov rax, 2
-	mov rdi, filename
+	mov rdi, [filename]
 	xor rdx, rdx
 	xor rsi, rsi
 	syscall
 	mov qword [FD], rax
 
+	;Read File
 	mov rax,0
 	mov rdi,qword [FD]
-	mov rsi, InputBuffer
+	mov rsi, [InputBuffer]
 	mov rdx, 1024
+	syscall
+
+	;Close File
+	mov rax, 6
+	mov rdi, [FD]
 	syscall
 	
 	jmp _IterScanner
@@ -36,7 +37,6 @@ _NextChar:
 	mov [InPointer], eax
 	ret
 
-
 _IterScanner:
 
 	mov rsi, [InputBuffer] ;source of buffer
@@ -44,8 +44,8 @@ _IterScanner:
 	
 	
 	;obtaining the characters 
-	mov eax, [InPointer]
-	mov bl, byte [rsi + eax] ; starts at the index of 0
+	mov rax, [InPointer]
+	mov bl, byte [rsi + rax] ; starts at the index of 0
 	mov [CurrentChar], bl
 	;Increment
 	
@@ -56,7 +56,22 @@ _IterScanner:
 	cmp eax, ecx
 	je _EndOfBuffer
 
-	mov 
+	;Check for comments
+	mov al, [Comments]
+	cmp bl, al
+	je CommentState
+
+	;Check for integers
+	mov al, [Digits]
+	cmp al, bl
+	je IntState
+
+	;Check for string literals
+	mov al, [dqm]
+	cmp al, bl
+	je StringState
+
+
 	;Comapare the operators to the current character
 	mov dl, Operators
 	cmp bl, dl
@@ -64,7 +79,7 @@ _IterScanner:
 	
 	mov [AssertionBuffer], bl
 	mov rcx, [AssertionBuffer]
-	mov rax, Cluster_Token
+	mov rax, [Cluster_Token]
 	cmp rcx, rax
 	je	_DefineKeyword
 
@@ -73,10 +88,10 @@ _IterScanner:
 	jmp _IterScanner
 
 
-
 section .data 
 	InPointer db 0
 	LineCount db 1
+	
 section .bss
 	TokenBuffer resq 164
 	InputBuffer resq 128
@@ -84,7 +99,7 @@ section .bss
 	FileName resb 64
 	FD resb 32;FileDes
 	currentChar resb 1
-
+	
 
 	CurrState resb 16
 

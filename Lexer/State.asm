@@ -1,5 +1,5 @@
-%include "Slytith/Lexer/Scanner.asm"
-%include "Slytith/Lexer/Tokens.asm"
+;%include "Lexer/Scanner.asm"
+;%include "Lexer/Tokens.asm"
 
 section .bss
     StringBuffer resq 1000
@@ -63,6 +63,7 @@ section .text
         mov [TokenBuffer], rcx
         mov rax, [IntBuffer]
         mov [TokenBuffer], rax
+        jmp _IterScanner
         
 
     IntState:
@@ -83,7 +84,7 @@ section .text
 
 
     AddNumberToBuffer: ; used for both floats and ints
-        mov rcx, word[IntLiteralToken]
+        mov rcx, [IntLiteralToken]
         mov [TokenBuffer], rcx
         mov rax, [IntBuffer]
         mov [TokenBuffer], rax
@@ -98,7 +99,7 @@ section .text
         mov al, byte[rax + rcx]
         mov bl, [Comments]
 
-        ;Determine the end of the comment by another @ symbol
+        ;Determine the end of the comment by another # symbol
         cmp al, bl
         je _IterScanner
 
