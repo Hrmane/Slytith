@@ -1,5 +1,6 @@
 ;Scanner
 
+%include "Lexer/TokenArray.asm"
 %include "Lexer/Tokens.asm"
 %include "Lexer/State.asm"
 %include "Lexer/classify.asm"

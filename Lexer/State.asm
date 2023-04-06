@@ -1,5 +1,5 @@
 ;%include "Lexer/Scanner.asm"
-;%include "Lexer/Tokens.asm"
+%include "Lexer/Tokens.asm"
 
 section .bss
     StringBuffer resq 1000
@@ -34,7 +34,7 @@ section .text
 
     AddStrToBuffer:
     
-        mov rax, word[StringLiteralToken]
+        mov rax, StringLiteralToken
         mov [TokenBuffer], rax
         mov [TokenBuffer], StringBuffer
         jmp _IterScanner
@@ -79,7 +79,6 @@ section .text
         mov al, O_DecimalPoint
         cmp al, bl
         je AddDecPoint
-
         jmp AddintToBuffer
 
 

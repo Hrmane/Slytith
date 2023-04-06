@@ -1,5 +1,5 @@
 ;classify  
-;%include "Lexer/Tokens.asm"
+%include "Lexer/Tokens.asm"
 ;%include "Lexer/Scanner.asm"
 section .text
 
