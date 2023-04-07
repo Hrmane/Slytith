@@ -8,21 +8,29 @@ section .data
     StringLiteralToken: db "STRING: "
     IntLiteralToken: db "INT: "
     FloatToken db "FLOAT: "
-    dqm db "\""
+    dqm db '"'
 
 section .text
 
     ;All of the code below are to be called after a specific cindition is met
     ;e.g, 
-   
+
+
+
+
+
+
+
+
+
     StringState:
         ;To be called after a double quotation is found and will stop till another is found
         ;first get the current POSITION for the character then compare to a quote
        
         mov rcx, [InPointer]
         mov rbx, [InputBuffer]
-        mov al, byte[rbx + rcx]
-        mov dl, dqm
+       mov al, byte[rbx + rcx]
+        mov dl, [dqm]
         cmp al, dl
         je AddStrToBuffer
         ;if the character isnt a quote, add it to the string buffer
@@ -36,7 +44,8 @@ section .text
     
         mov rax, StringLiteralToken
         mov [TokenBuffer], rax
-        mov [TokenBuffer], StringBuffer
+        mov rcx, StringBuffer
+        mov [TokenBuffer], rcx
         jmp _IterScanner
 
 
@@ -52,11 +61,11 @@ section .text
         mov rdx, [InputBuffer]
         mov bl, byte[rdx + rcx]
         call _NextChar
-        cmp bl, digits
+        cmp bl, [Digits]
         jne AddFloatToBuffer
 
         mov [IntBuffer], bl
-        jmp FloatStat
+        jmp FloatState
 
     AddFloatToBuffer:
         mov rcx, [FloatToken]
@@ -72,14 +81,14 @@ section .text
         mov bl, byte[rdx + rcx]
         mov [IntBuffer], bl
         call _NextChar
-        mov al, Digits
+        mov al, [Digits]
         cmp al, bl
         je IntState
 
         mov al, O_DecimalPoint
         cmp al, bl
         je AddDecPoint
-        jmp AddintToBuffer
+        jmp AddNumberToBuffer
 
 
     AddNumberToBuffer: ; used for both floats and ints

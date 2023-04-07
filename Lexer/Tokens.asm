@@ -73,7 +73,7 @@ section .data
       T_MULTLNCOM_END equ"COM-E"
       T_COMMA equ "COMMA"
       T_EQUALS equ "EQU"
-      T_TILDA equ "TILDE"
+      T_TILDE equ "TILDE"
     
     ;******************************************************
     ; Data types
@@ -119,7 +119,7 @@ section .data
        K_Mute equ "mut"	;Used when declaring a "non-changable" variable
        K_Immute equ	"immut";Used for varibles that will have value interchanged
        K_Vset equ "vset";Similar as a stuct
-       K_Notype equ "notype" ; Similar to void type (not a int, str, bool, etc.)
+       K_NoType equ "notype" ; Similar to void type (not a int, str, bool, etc.)
        K_ArgsArrow equ "->" ;Similar to argument parentheses e.g element Main -> str[] args<<
        K_OpenFunc equ "<<" ;Open of the function to place code
        K_CloseFunc equ ">>"; Close the function
@@ -127,7 +127,7 @@ section .data
        K_Byte equ "byte"
        K_Char equ "char"
        K_Snum equ "snum"
-       K_int equ "int"
+       K_Int equ "int"
        K_Lnum equ "lnum"; Long-number
        K_Fltt equ "fltt" ;Float 32-bit
        K_Flsf equ "flsf" ;Float 64 bit

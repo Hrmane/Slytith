@@ -21,6 +21,10 @@ section .text
 	    mov rsi, art
 	    mov rdx, 100
 	    syscall
+
+	    mov rax, 6
+	    mov rdi, [FD]
+	    syscall
         ;print the ascii art
         mov rax, 1
         mov rdi, 1

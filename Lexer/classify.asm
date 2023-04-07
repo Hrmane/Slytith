@@ -70,15 +70,14 @@ _OpFound:
 		je ArrayRBrack
 
 
-	xor al, al
-	jmp _IterScanner
+	
 
 
 
 	ArgsArrow:
 			mov rcx, T_ARGARROW
 			mov [TokenBuffer], rcx
-			ret
+
 
 	FuncOpen:
 			mov rcx, T_OPEN_FUNC
@@ -89,7 +88,7 @@ _OpFound:
 			mov rcx, T_CLOSE_FUNC
 			mov [TokenBuffer], rcx
 			ret
-			
+
     DirDiv:
 			mov rcx, T_DIR_DIV
 			mov [TokenBuffer], rcx
@@ -104,8 +103,8 @@ _OpFound:
 			mov rcx, T_LESS
 			mov [TokenBuffer], rcx
 			ret
-			
-    
+
+
     GreaterThan:
 			mov rcx, T_GREATER
 			mov [TokenBuffer], rcx
@@ -124,7 +123,7 @@ _OpFound:
 			inc rax
 			mov [LineCount], rax
 			ret
-			
+
     Equal:
 			mov rcx, T_EQUALS
 			mov [TokenBuffer], rcx
@@ -154,8 +153,8 @@ _OpFound:
 			mov [TokenBuffer], rcx
 			ret
 
-			
-    
+
+
 ;////////////////////////////////////////////////////////////////////
 ;								KEYWORDS
 ;////////////////////////////////////////////////////////////////////
@@ -178,13 +177,13 @@ _OpFound:
 			mov [TokenBuffer], rcx
 			ret
 
-	
+
 
 	Element:
 			mov rcx, T_ELEMENT
 			mov [TokenBuffer], rcx
 			ret
-	
+
 	KByte:
 				mov rcx, TYPE_BYTE
 				mov [TokenBuffer], rcx
@@ -193,22 +192,22 @@ _OpFound:
 				mov rcx, TYPE_CHAR
 				mov [TokenBuffer], rcx
 				ret
-	
+
 	Snum:
 				mov rcx, TYPE_SNUM
 				mov [TokenBuffer], rcx
 				ret
-	
+
 	KInt:
 				mov rcx, TYPE_INT
 				mov [TokenBuffer], rcx
 				ret
-	
+
 	Lnum:
 				mov rcx, TYPE_LNUM
 				mov [TokenBuffer], rcx
 				ret
-	
+
 	Fltt:
 				mov rcx, TYPE_FLOAT32
 				mov [TokenBuffer], rcx
@@ -217,31 +216,31 @@ _OpFound:
 				mov rcx, TYPE_FLOAT64
 				mov [TokenBuffer], rcx
 				ret
-		
+
 	Bool:
 					mov rcx, TYPE_BOOL
 					mov [TokenBuffer], rcx
 					ret
 	String:
-					mov rcx, TYPE_STRING
+					mov rcx, TYPE_STR
 					mov [TokenBuffer], rcx
 					ret
-		
+
 	KBit:
 					mov rcx, TYPE_BIT
 					mov [TokenBuffer], rcx
 					ret
-		
+
 	Nibble:
 					mov rcx, TYPE_NIBBLE
 					mov [TokenBuffer], rcx
 					ret
-		
+
 	KWord:
 					mov rcx, TYPE_WORD
 					mov [TokenBuffer], rcx
 					ret
-		
+
 	KDword:
 					mov rcx, TYPE_DWORD
 					mov [TokenBuffer], rcx
@@ -250,27 +249,27 @@ _OpFound:
 					mov rcx, TYPE_QWORD
 					mov [TokenBuffer], rcx
 					ret
-			
+
 	Store:
 						mov rcx, T_MOVINTO
 						mov [TokenBuffer], rcx
 						ret
-			
+
 	Ict:
 						mov rcx, T_ICT
 						mov [TokenBuffer], rcx
 						ret
-			
+
 	Altern:
-						mov rcx, T_ALT
+						mov rcx, T_ALTERN
 						mov [TokenBuffer], rcx
 						ret
-			
+
 	Declare:
 						mov rcx, T_DECLARE
 						mov [TokenBuffer], rcx
 						ret
-			
+
 	Sync:
 						mov rcx, T_SYNC
 						mov [TokenBuffer], rcx
@@ -279,7 +278,7 @@ _OpFound:
 			mov rcx, T_SYSEND
 			mov [TokenBuffer], rcx
 			ret
-	
+
 	Return:
 				mov rcx, T_RETURN
 				mov [TokenBuffer], rcx
@@ -288,17 +287,17 @@ _OpFound:
 				mov rcx, T_REPEAT
 				mov [TokenBuffer], rcx
 				ret
-	
+
 	LoopCall:
 				mov rcx, T_LOOP
 				mov [TokenBuffer], rcx
 				ret
-	
+
 	For:
 				mov rcx, T_FOR
 				mov [TokenBuffer], rcx
 				ret
-	
+
 	Foreach:
 				mov rcx, T_FOREACH
 				mov [TokenBuffer], rcx
@@ -311,7 +310,7 @@ _OpFound:
 	Division:
 				mov rcx, T_FOREACH
 				mov [TokenBuffer], rcx
-				ret	
+				ret
 
 	Subtraction:
 				mov rcx, T_FOREACH
@@ -331,8 +330,8 @@ _OpFound:
 			mov rcx, T_EQUAL_LESS
 			mov [TokenBuffer], rcx
 			ret
-			
-    
+
+
     GreaterEqual:
 			mov rcx, T_EQUAL_GREATER
 			mov [TokenBuffer], rcx
@@ -343,8 +342,8 @@ _OpFound:
 			mov rcx, T_EQUAL_TO
 			mov [TokenBuffer], rcx
 			ret
-			
-    
+
+
     NotEqual:
 			mov rcx, T_NOT_EQUAL
 			mov [TokenBuffer], rcx
@@ -358,18 +357,18 @@ _DefineKeyword: ; jumped to by _IterScanner
 		cmp rcx, rax
 		je Muteable
 
-		
+
 		mov rax, K_Immute
 		cmp rcx, rax
 		je Immutable
 
 
-		
+
 		mov rax, K_Vset
 		cmp rcx, rax
 		je ValueSet
 
-		
+
 		mov rax, K_NoType
 		cmp rcx, rax
 		je NoType
@@ -380,8 +379,8 @@ _DefineKeyword: ; jumped to by _IterScanner
 		cmp rcx, rax
 		je ArgsArrow
 
-		
-		mov rax, K_Opennc
+
+		mov rax, K_OpenFunc
 		cmp rcx, rax
 		je FuncOpen
 
@@ -391,18 +390,18 @@ _DefineKeyword: ; jumped to by _IterScanner
 		cmp rcx, rax
 		je FuncClose
 
-	
+
 		mov rax, K_Element
 		cmp rcx, rax
 		je Element
 
 
-		
+
 		mov rax, K_Byte
 		cmp rcx, rax
 		je KByte
 
-		
+
 		mov rax, K_Char
 		cmp rcx, rax
 		je Char
@@ -411,10 +410,10 @@ _DefineKeyword: ; jumped to by _IterScanner
 		cmp rcx, rax
 		je Snum
 
-		
+
 		mov rax, K_Int
 		cmp rcx, rax
-		je Kint
+		je KInt
 
 		mov rax, K_Lnum
 		cmp rcx, rax
@@ -434,13 +433,13 @@ _DefineKeyword: ; jumped to by _IterScanner
 		cmp rcx, rax
 		je Bool
 
-	
+
 		mov rax, K_String
 		cmp rcx, rax
 		je String
 
 
-		mov rax, K_nit
+		mov rax, K_bit
 		cmp rcx, rax
 		je KBit
 
@@ -472,7 +471,7 @@ _DefineKeyword: ; jumped to by _IterScanner
 		cmp rcx, rax
 		je Altern
 
-	
+
 		mov rax, K_Dec
 		cmp rcx, rax
 		je Declare
@@ -498,7 +497,7 @@ _DefineKeyword: ; jumped to by _IterScanner
 
 		mov rax, K_Mod
 		cmp rcx, rax
-		je KModulo
+		je Modulo
 
 		mov rax, K_Sysend
 		cmp rcx, rax
@@ -514,33 +513,33 @@ _DefineKeyword: ; jumped to by _IterScanner
 
 		mov rax, K_Loop
 		cmp rcx, rax
-		je KLoop
+		je LoopCall
 
 		mov rax, K_For
 		cmp rcx, rax
-		je KFor
+		je For
 
 		mov rax, K_Fore
 		cmp rcx, rax
-		je KFore
+		je Foreach
 
-		mov rax, K_Mult
+		mov rax, K_Mul
 		cmp rcx, rax
 		je Multiply
 
-		mov rax, K_True
-		cmp rcx, rax
-		je KTrue
+		;mov rax, K_True
+		;cmp rcx, rax
+		;je KTrue
+        ;
+		;mov rax, K_False
+		;cmp rcx, rax
+		;je KFalse
 
-		mov rax, K_False
-		cmp rcx, rax
-		je KFalse
 
 
-		
 
 		xor rcx,rcx ; clear the buffer
-		ret	
+		ret
 		
 	
 
