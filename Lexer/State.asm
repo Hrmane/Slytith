@@ -7,8 +7,8 @@ section .bss
 section .data
     StringLiteralToken: db "STRING: "
     IntLiteralToken: db "INT: "
-    FloatToken db "FLOAT: "
-    dqm db '"'
+    FloatToken: db "FLOAT: "
+    dqm: db '"'
 
 section .text
 

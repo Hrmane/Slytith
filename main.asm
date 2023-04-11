@@ -29,9 +29,9 @@ section .text
         mov rdx, Msg_Comp_len
         syscall
 
-        mov rcx, [TestFile]
+        lea rcx, [TestFile]
         mov [FileName], rcx
-        jmp Lex
+        call _CompSequence
 
         mov rax, 1
         mov rdi, 1

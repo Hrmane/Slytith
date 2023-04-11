@@ -1,0 +1,45 @@
+Character grabbing:
+    mov rsi, buffer
+    mov rcx, [index]
+    mov bl, byte[rsi + rcx]
+
+Check Character in array elements:
+
+    _True:
+    		mov rax, 1
+    		mov rdi, 1
+    		mov rsi, Truemsg
+    		mov rdx, msglen
+    		syscall
+
+    		mov rax, 60
+    		xor rdi, rdi
+    		syscall
+
+    	end:
+    		mov rax, 60
+    		xor rdi, rdi
+    		syscall
+
+    	_inc:
+    		mov rax, [ArrIndex]
+    		inc rax
+    		mov [ArrIndex], rax
+    		ret
+    	ArrayCMP:
+    		mov rsi, Array
+    		mov rax, [ArrIndex]
+    		mov bl, byte[rsi + rax]
+    		cmp bl, 0
+    		je end
+
+    		mov byte[curr], bl
+    		mov bl, [curr]
+    		mov al, [InputChar]
+    		cmp al, bl
+    		je _True
+
+    		call _inc
+    		cmp al, bl
+    		jne ArrayCMP
+    		ret

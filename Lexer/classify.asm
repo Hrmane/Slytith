@@ -77,6 +77,7 @@ _OpFound:
 	ArgsArrow:
 			mov rcx, T_ARGARROW
 			mov [TokenBuffer], rcx
+			ret
 
 
 	FuncOpen:
@@ -119,9 +120,7 @@ _OpFound:
 			mov rcx, T_SEMICOLON
 			mov [TokenBuffer], rcx
 
-			mov rax, [LineCount]
-			inc rax
-			mov [LineCount], rax
+
 			ret
 
     Equal:

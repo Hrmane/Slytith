@@ -3,6 +3,7 @@
 %include "Lexer/Tokens.asm"
 %include "Lexer/State.asm"
 %include "Lexer/classify.asm"
+%include "Parser/Parse.asm"
 
 section .text
 
@@ -39,21 +40,22 @@ _NextChar:
 _IterScanner:
 
 	mov rsi, [InputBuffer] ;source of buffer
+	mov [rsi], NullTerm
 
 	
 	
 	;obtaining the characters 
 	mov rax, [InPointer]
-	mov ecx, [rsi + rax] ; starts at the index of 0
-	mov [CurrentChar], bl
+	mov bl, byte[rsi + rax] ; starts at the index of 0
+	mov byte[CurrentChar],bl
 	;Increment
 	
 	
 	;Check if pointer is at limit of buffer
-	mov eax,[InPointer]
-	mov ecx, 1024
-	cmp eax, ecx
-	ret
+	mov al, NullTerm
+	cmp al, bl
+    je ParserStage
+
 
 	;Check for comments
 	mov al, [Comments]
@@ -88,13 +90,13 @@ _IterScanner:
 
 
 section .data
-
-	
+    InPointer db  0
+	NullTerm db 0
 section .bss
-	InPointer resb  1000
-	LineCount resb 1000
-	TokenBuffer resq 164
-	InputBuffer resq 128
+
+
+	TokenBuffer resb 164
+	InputBuffer resb 128
 	AssertionBuffer resb 64
 	FileName resb 64
 	FD resb 32;FileDes

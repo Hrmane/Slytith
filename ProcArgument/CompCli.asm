@@ -42,6 +42,5 @@ section .text
 
 section .bss
     ArtFileName resb 64
-    fd resb 8
-    art resb 100 
+    art resb 100
 section. data
