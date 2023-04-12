@@ -46,7 +46,7 @@ section .text
         mov [TokenBuffer], rax
         mov rcx, StringBuffer
         mov [TokenBuffer], rcx
-        jmp _IterScanner
+        jmp Scanner
 
 
 
@@ -72,7 +72,7 @@ section .text
         mov [TokenBuffer], rcx
         mov rax, [IntBuffer]
         mov [TokenBuffer], rax
-        jmp _IterScanner
+        jmp Scanner
         
 
     IntState:
@@ -97,7 +97,7 @@ section .text
         mov rax, [IntBuffer]
         mov [TokenBuffer], rax
 
-        jmp _IterScanner 
+        jmp Scanner 
 
 
 
@@ -109,7 +109,7 @@ section .text
 
         ;Determine the end of the comment by another # symbol
         cmp al, bl
-        je _IterScanner
+        je Scanner
 
         call _NextChar
 

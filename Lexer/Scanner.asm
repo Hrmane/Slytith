@@ -5,6 +5,7 @@
 %include "Lexer/classify.asm"
 %include "Parser/Parse.asm"
 
+
 section .text
 
 
@@ -29,7 +30,7 @@ Lex:
 	mov rdi, [FD]
 	syscall
 	
-	jmp _IterScanner
+	jmp Scanner
 
 _NextChar:
 	mov eax, [InPointer] ;The Position pointer we need to grab the charater out of the string
@@ -37,7 +38,7 @@ _NextChar:
 	mov [InPointer], eax
 	ret
 
-_IterScanner:
+Scanner:
 
 	mov rsi, [InputBuffer] ;source of buffer
 	mov [rsi], NullTerm
@@ -63,9 +64,9 @@ _IterScanner:
 	je CommentState
 
 	;Check for integers
-	mov al, [Digits]
-	cmp al, bl
-	je IntState
+	;mov al, [Digits]
+	;cmp al, bl
+	;je IntState
 
 	;Check for string literals
 	mov al, [dqm]
@@ -86,15 +87,15 @@ _IterScanner:
 
 	call _NextChar
 	
-	jmp _IterScanner
+	jmp Scanner
 
 
 section .data
-    InPointer db  0
+
 	NullTerm db 0
 section .bss
 
-
+    InPointer resb 124
 	TokenBuffer resb 164
 	InputBuffer resb 128
 	AssertionBuffer resb 64
