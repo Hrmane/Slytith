@@ -16,13 +16,6 @@ section .text
     ;e.g, 
 
 
-
-
-
-
-
-
-
     StringState:
         ;To be called after a double quotation is found and will stop till another is found
         ;first get the current POSITION for the character then compare to a quote
@@ -47,8 +40,6 @@ section .text
         mov rcx, StringBuffer
         mov [TokenBuffer], rcx
         jmp Scanner
-
-
 
     AddDecPoint:
         mov al, byte [O_DecimalPoint]

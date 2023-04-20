@@ -7,6 +7,7 @@ section .text
 ;/////////////////////////////////////////////////////////////////
 _OpFound:
 	;clear string after
+
 	mov bl, [Whitespace] 
 	mov al, [CurrentChar]
 	cmp al, bl
@@ -68,6 +69,8 @@ _OpFound:
 		mov rax, O_ArrayClose
 		cmp rcx, rax
 		je ArrayRBrack
+
+		jmp Scanner
 
 
 	
