@@ -8,10 +8,10 @@
 
 section .text
 
-%macro print 1
+%macro print 0
     mov rax, 1
     mov rdi, 1
-    mov rsi, %1
+    mov r9, Cycle
     mov rdx, 123
     syscall
     %endmacro
@@ -24,14 +24,14 @@ Lex: ;Opens, reads, and closes the file
 	mov rax, 2
 	mov rdi, FileName
 	xor rdx, rdx
-	xor rsi, rsi
+	xor r9, r9
 	syscall
 	mov qword [FD], rax
 
 	;Read File
 	mov rax,0
 	mov rdi,qword [FD]
-	mov rsi, InputBuffer
+	mov r9, InputBuffer
 	mov rdx, 1024
 	syscall
 
@@ -45,25 +45,15 @@ Lex: ;Opens, reads, and closes the file
 
 
 Scanner:
-
-    mov rsi, [InputBuffer]
-	mov byte[rsi + 1023], 0
-
-
+    mov r9, InputBuffer
 
 	;obtaining the characters 
 	mov rax, [InPointer]
-	mov bl, byte[rsi + rax] ; starts at the index of 0
-	mov byte[CurrentChar],bl
+	mov bl, byte[r9 + rax] ; starts at the index of 0
 
-
-	
 	;Check if pointer is at limit of buffer
-	xor al, al
 	cmp bl, 0
     call END
-
-
 
 	;Check for comments
 	xor al,al
@@ -76,26 +66,23 @@ Scanner:
 	cmp al, bl
 	je StringState
 
-
-
 	;Comapare the operators to the current character
 	call IndicatorsCmp
 
-	
 	mov [AssertionBuffer], bl
 	mov rcx, [AssertionBuffer]
 
 	xor al, al
-	mov al, byte[rcx + 0]
+	mov al, [rcx + 0]
 	xor dl, dl
 	mov dl, [CurrentABChar]
 
-
-
-	call DigitsCmp
+	;call DigitsCmp
 
 	call _NextChar
-	
+
+
+
 	jmp Scanner
 
 _NextChar:
@@ -107,7 +94,7 @@ _NextChar:
 section .data
 
 	NullTerm db 0
-	InputBuffer db "dec snum var = 2390;",0
+	InputBuffer db "= 2390;",0
 	Cycle: db "Cycle completed", 0ah
 section .bss
 
