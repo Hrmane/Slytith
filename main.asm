@@ -33,13 +33,9 @@ section .text
 
         ;mov rcx, TestFile
        ; mov [FileName], rcx
-        jmp Scanner
+        jmp _GrabChar
 
-        mov rax, 1
-        mov rdi, 1
-         mov rsi, TokenBuffer
-        mov rdx, 9312
-        syscall
+
 
        mov rax, 60
        xor rdi, rdi

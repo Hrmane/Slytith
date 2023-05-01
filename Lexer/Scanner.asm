@@ -1,4 +1,4 @@
-;Scanner
+;_GrabChar
 %include "Lexer/TokenArray.asm"
 %include "Lexer/Tokens.asm"
 %include "Lexer/State.asm"
@@ -40,50 +40,40 @@ Lex: ;Opens, reads, and closes the file
 	mov rdi, [FD]
 	syscall
 	
-	jmp Scanner
+	jmp _GrabChar
 
 
+_Output:
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, Output_txt
+    mov rdx, otxtLen
+    syscall
 
-Scanner:
-    mov r9, InputBuffer
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, TokenBuffer
+    mov rdx, 20000
+    syscall
 
-	;obtaining the characters 
-	mov rax, [InPointer]
-	mov bl, byte[r9 + rax] ; starts at the index of 0
-
-	;Check if pointer is at limit of buffer
-	cmp bl, 0
     call END
 
-	;Check for comments
-	xor al,al
-	mov al, Comments
-	cmp bl, al
-	je CommentState
+_GrabChar:
+    mov r9, InputBuffer
+	mov rax, [InPointer]
 
-	xor al, al
-	mov al, [dqm]
-	cmp al, bl
-	je StringState
+	mov bl, byte[r9 + rax]
+	cmp bl, 0
+    je _Output
 
-	;Comapare the operators to the current character
-	call IndicatorsCmp
-
-	mov [AssertionBuffer], bl
-	mov rcx, [AssertionBuffer]
-
-	xor al, al
-	mov al, [rcx + 0]
-	xor dl, dl
-	mov dl, [CurrentABChar]
-
-	;call DigitsCmp
+    mov [CurrentChar], bl
 
 	call _NextChar
 
+	jmp IndicatorsCmp
 
 
-	jmp Scanner
+
 
 _NextChar:
 	mov eax, [InPointer] ;The Position pointer we need to grab the charater out of the string
@@ -92,14 +82,15 @@ _NextChar:
 	ret
 
 section .data
-
+    Output_txt: db "Outputted Lexemes >> "
+    otxtLen equ $-Output_txt
 	NullTerm db 0
 	InputBuffer db "= 2390;",0
 	Cycle: db "Cycle completed", 0ah
 section .bss
 
     InPointer resb 124
-	TokenBuffer resb 164
+	TokenBuffer resb 20000
 	;InputBuffer resb 128
 	AssertionBuffer resb 64
 	FileName resb 64

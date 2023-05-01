@@ -39,7 +39,7 @@ section .text
         mov [TokenBuffer], rax
         mov rcx, StringBuffer
         mov [TokenBuffer], rcx
-        jmp Scanner
+        jmp _GrabChar
 
     AddDecPoint:
         mov al, byte [O_DecimalPoint]
@@ -63,7 +63,7 @@ section .text
         mov [TokenBuffer], rcx
         mov rax, [IntBuffer]
         mov [TokenBuffer], rax
-        jmp Scanner
+        jmp _GrabChar
         
 
     IntState:
@@ -88,7 +88,7 @@ section .text
         mov rax, [IntBuffer]
         mov [TokenBuffer], rax
 
-        jmp Scanner 
+        jmp _GrabChar
 
 
 
@@ -100,7 +100,7 @@ section .text
 
         ;Determine the end of the comment by another # symbol
         cmp al, bl
-        je Scanner
+        je _GrabChar
 
         call _NextChar
 

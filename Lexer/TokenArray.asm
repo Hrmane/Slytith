@@ -21,12 +21,12 @@ section .data
 section .text
 
     CheckAssertBuffer:
-            mov rax, [AssertionBuffer]
+            mov rax, AssertionBuffer
             mov rcx, Cluster_Token
             mov r8, [Index]
             mov rdx, [rax + rcx]
             cmp rdx, 0
-            je Identifier ; if the index is = to 0, buffer is a identifier
+            je _GrabChar
 
             cmp rax, rcx
             jmp _DefineKeyword
@@ -46,17 +46,31 @@ section .text
 
 
     DigitsCmp:
+        mov rax, 1
+      mov rdi, 1
+      mov rsi, Cycle
+        mov rdx, 20
+       syscall
+
+        call _add2Cbuf
+
         mov rcx, Digits
         mov rax, [Index]
         mov bl, byte[rcx + rax]
         cmp bl, 0
         je CheckAssertBuffer
 
-        mov byte[curr], bl
-        mov bl, [curr]
-        mov al, [CurrentABChar]
+       ; mov byte[curr], bl
+       ; mov bl, [curr]
+
+       mov al, byte[AssertionBuffer + 0]
+
+
+
+
+        mov dl, CurrentABChar
         call IncArrayPos
-        cmp al, bl
+        cmp dl, al
         je IntState
 
 
@@ -66,34 +80,62 @@ section .text
 
         ret
 
+    _add2Cbuf:
+        mov bl, byte[CurrentChar]
+        mov byte[AssertionBuffer], bl
+        ret
+
+    _add2Cbuf_cbufcheck:
+        mov bl, byte[CurrentChar]
+        mov byte[AssertionBuffer], bl
+        jmp CheckAssertBuffer
 
 
 
     IndicatorsCmp:
 
+
+
+         mov bl, byte[CurrentChar]
+          xor al,al
+          mov al, Comments
+          cmp bl, al
+          je CommentState
+
+
+          xor al, al
+          mov al, [dqm]
+          cmp al, bl
+          je StringState
+
+
+
          mov rcx, Indicators
             mov rax, [Index]
             mov bl, byte[rcx + rax]
             cmp bl, 0
-            je Scanner
+            je DigitsCmp
+
 
 
 
             mov byte[curr], bl
             mov bl, [curr]
             mov al, [CurrentChar]
-            mov dl, byte[Whitespace]
+
+            mov dl, Whitespace
+
             call IncArrayPos
             cmp al, dl
-            je Scanner
+            je DigitsCmp
+
 
 
             cmp al, bl
             je _OpFound
 
 
-            cmp al, bl
-            jne DigitsCmp
+            jmp IndicatorsCmp
 
             ret
 
@@ -107,4 +149,4 @@ section .text
         mov rax, [r8]
         mov rax, rcx
 
-        jmp Scanner
+        jmp _GrabChar

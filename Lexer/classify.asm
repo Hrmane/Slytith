@@ -70,7 +70,7 @@ _OpFound:
 		cmp rcx, rax
 		je ArrayRBrack
 
-		jmp Scanner
+		ret
 
 
 	
