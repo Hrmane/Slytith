@@ -67,6 +67,7 @@ section .text
         
 
     IntState:
+
         mov rcx, [InPointer]
         mov rdx, [InputBuffer]
         mov bl, byte[rdx + rcx]

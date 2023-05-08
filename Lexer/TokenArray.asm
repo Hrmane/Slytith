@@ -5,6 +5,9 @@ section .bss
     Index resb 24
     CurrentABChar resb 1
     curr resb 1
+    DigitIndex resb 24
+    TokenIndex resb 36
+
 section .data
 
         ID: db "Identifier"
@@ -23,20 +26,40 @@ section .text
     CheckAssertBuffer:
             mov rax, AssertionBuffer
             mov rcx, Cluster_Token
-            mov r8, [Index]
+            mov r8, [TokenIndex]
             mov rdx, [rax + rcx]
             cmp rdx, 0
             je _GrabChar
 
             cmp rax, rcx
             jmp _DefineKeyword
+            call Inc_t
 
 
 
             cmp rax, rcx
             jne CheckAssertBuffer
         ret
+    Inc_d:
+        mov rax, [DigitIndex]
+        inc rax
+        mov [DigitIndex], rax
+        ret
 
+    ClearDIn_BackToGrab:
+      xor DigitIndex, DigitIndex
+      jmp _GrabChar
+
+    ClearTIn_BackToGrab:
+      xor TokenIndex, TokenIndex
+      jmp _GrabChar
+
+    
+    Inc_t:
+        mov rax, [TokenIndex]
+        inc rax
+        mov [TokenIndex], rax
+        ret
 
     IncArrayPos:
         mov rax, [Index]
@@ -44,21 +67,19 @@ section .text
         mov [Index], rax
         ret
 
-
-    DigitsCmp:
-        mov rax, 1
-      mov rdi, 1
-      mov rsi, Cycle
-        mov rdx, 20
-       syscall
-
+    Add2cbuf_DCMP:
         call _add2Cbuf
+        jmp DigitsCmp
+    DigitsCmp:
+
 
         mov rcx, Digits
-        mov rax, [Index]
+        mov rax, [DigitIndex]
         mov bl, byte[rcx + rax]
         cmp bl, 0
         je CheckAssertBuffer
+
+
 
        ; mov byte[curr], bl
        ; mov bl, [curr]
@@ -68,8 +89,8 @@ section .text
 
 
 
-        mov dl, CurrentABChar
-        call IncArrayPos
+        mov dl, [CurrentABChar]
+        call Inc_d
         cmp dl, al
         je IntState
 
@@ -90,13 +111,15 @@ section .text
         mov byte[AssertionBuffer], bl
         jmp CheckAssertBuffer
 
-
+  _xor_index_DCMP:
+    xor Index, Index
+    je DigitsCmp
 
     IndicatorsCmp:
 
 
 
-         mov bl, byte[CurrentChar]
+         mov bl, [CurrentChar]
           xor al,al
           mov al, Comments
           cmp bl, al
@@ -114,7 +137,7 @@ section .text
             mov rax, [Index]
             mov bl, byte[rcx + rax]
             cmp bl, 0
-            je DigitsCmp
+            je _xor_index_DCMP
 
 
 
@@ -127,7 +150,7 @@ section .text
 
             call IncArrayPos
             cmp al, dl
-            je DigitsCmp
+            je _xor_index_DCMP
 
 
 

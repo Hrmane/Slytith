@@ -82,11 +82,11 @@ _NextChar:
 	ret
 
 section .data
-    Output_txt: db "Outputted Lexemes >> "
+    Output_txt: db "Outputted Lexemes >> ",0
     otxtLen equ $-Output_txt
 	NullTerm db 0
-	InputBuffer db "= 2390;",0
-	Cycle: db "Cycle completed", 0ah
+	InputBuffer db "#",0
+	Cycle: db "Cycle completed", 0ah ,0
 section .bss
 
     InPointer resb 124
