@@ -1,6 +1,11 @@
 ;classify  
 %include "Lexer/Tokens.asm"
 ;%include "Lexer/Scanner.asm"
+
+section .data
+    Cycle2: db "<<>>", 0ah ,0
+    clen2 equ $-Cycle2
+
 section .text
 ;/////////////////////////////////////////////////////////////////
 ;								OPERATORS
