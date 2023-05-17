@@ -3,159 +3,231 @@
 ;%include "Lexer/Scanner.asm"
 
 section .data
+
+
     Cycle2: db "<<>>", 0ah ,0
     clen2 equ $-Cycle2
+
+
+
+    here: db "Here", 0ah
 
 section .text
 ;/////////////////////////////////////////////////////////////////
 ;								OPERATORS
 ;/////////////////////////////////////////////////////////////////
 _OpFound:
-	;clear string after
 
-	mov bl, [Whitespace] 
+	mov bl, [Whitespace]
 	mov al, [CurrentChar]
 	cmp al, bl
-	je _NextChar
-
-		mov rax, O_TO
-		cmp rcx, rax
-		je ToSign
-
-		
-		mov rax, O_DefMacro
-		cmp rcx, rax
-		je DefMacro
+	je _GrabChar
 
 
-		
-		mov rax, O_LessThan
-		cmp rcx, rax
-		je LessThan
-
-		
-		mov rax, O_GreaterThan
-		cmp rcx, rax
-		je GreaterThan
+    mov rax, 1
+             mov rdi, 1
+             mov rsi, Cycle2
+             mov rdx, clen2
+             syscall
+    call _OChain
 
 
+    _OChain:
+        mov al, [CurrentChar]
+        call _CTO
+        call _CMA
+        call _CLT
+        call _CGT
+        call _CDP
+        call _CSE
+        call _CES
+        call _CTI
+        call _CMP
+        call _CAO
+        call _CAC
+        jmp _AddToCbuf_GrabChar
 
-		mov rax, O_DecimalPoint
-		cmp rcx, rax
-		je DecPoint
+    _CTO:
+        mov dl, O_TO
+    		cmp al, dl
+    		je ToSign
+    		ret
 
-		
-		mov rax, O_Semicolon
-		cmp rcx, rax
-		je Semicolon
+    _CMA:
+    		mov dl, O_DefMacro
+    		cmp al, dl
+    		je DefMacro
+            ret
 
+    _CLT:
+    		mov dl, O_LessThan
+    		cmp al, dl
+    		je LessThan
+            ret
+    _CGT:
+    		mov dl, O_GreaterThan
+    		cmp al, dl
+    		je GreaterThan
+            ret
 
+    _CDP:
+    		mov dl, O_DecimalPoint
+    		cmp al, dl
+    		je DecPoint
+            ret
+    _CSE:
+    		mov dl, O_Semicolon
+    		cmp al, dl
+    		je Semicolon
+            ret
 
-		mov rax, O_EqualSign
-		cmp rcx, rax
-		je Equal
+    _CES:
+    		mov dl, O_EqualSign
+    		cmp al, dl
+    		je Equal
+            ret
+    _CTI:
+    		mov dl, O_Tilde
+    		cmp al, dl
+    		je Tilde
+            ret
 
-	
-		mov rax, O_Tilde
-		cmp rcx, rax
-		je Tilde
-
-
-		
-		mov rax, O_MemPointer
-		cmp rcx, rax
-		je MemPointer
-
-		
-		mov rax, O_ArrayOpen
-		cmp rcx, rax
-		je ArrayLBrack
-
-		mov rax, O_ArrayClose
-		cmp rcx, rax
-		je ArrayRBrack
-
-		ret
-
-
+    _CMP:
+    		mov dl, O_MemPointer
+    		cmp al, dl
+    		je MemPointer
+            ret
+    _CAO:
+    		mov dl, O_ArrayOpen
+    		cmp al, dl
+    		je ArrayLBrack
+    		ret
+    _CAC:
+    		mov dl, O_ArrayClose
+    		cmp al, dl
+    		je ArrayRBrack
+            ret
 	
 
 
 
 	ArgsArrow:
+	        mov rax, [TBufPos]
 			mov rcx, T_ARGARROW
-			mov [TokenBuffer], rcx
+			mov [TokenBuffer+rax], rcx
+			inc rax
+			mov [TBufPos], rax
 			ret
 
 
 	FuncOpen:
+			mov rax, [TBufPos]
 			mov rcx, T_OPEN_FUNC
-			mov [TokenBuffer], rcx
+			mov [TokenBuffer+rax], rcx
+			inc rax
+			mov [TBufPos], rax
 			ret
 
 	FuncClose:
+			mov rax, [TBufPos]
 			mov rcx, T_CLOSE_FUNC
-			mov [TokenBuffer], rcx
+			mov [TokenBuffer+rax], rcx
+			inc rax
+			mov [TBufPos], rax
 			ret
 
     DirDiv:
+			mov rax, [TBufPos]
 			mov rcx, T_DIR_DIV
-			mov [TokenBuffer], rcx
+			mov [TokenBuffer+rax], rcx
+			inc rax
+			mov [TBufPos], rax
 			ret
 
 	DefMacro:
+			mov rax, [TBufPos]
 			mov rcx, T_MACRO_DEFINE
-			mov [TokenBuffer], rcx
+			mov [TokenBuffer+rax], rcx
+			inc rax
+			mov [TBufPos], rax
 			ret
 
 	LessThan:
+			mov rax, [TBufPos]
 			mov rcx, T_LESS
-			mov [TokenBuffer], rcx
+			mov [TokenBuffer+rax], rcx
+			inc rax
+			mov [TBufPos], rax
 			ret
 
 
     GreaterThan:
+			mov rax, [TBufPos]
 			mov rcx, T_GREATER
-			mov [TokenBuffer], rcx
+			mov [TokenBuffer+rax], rcx
+			inc rax
+			mov [TBufPos], rax
 			ret
 
 	DecPoint:
+			mov rax, [TBufPos]
 			mov rcx, T_DECIMAL_POINT
-			mov [TokenBuffer], rcx
+			mov [TokenBuffer + rax], rcx
+			inc rax
+			mov [TBufPos], rax
 			ret
 
 	Semicolon:
+			mov rax, [TBufPos]
 			mov rcx, T_SEMICOLON
-			mov [TokenBuffer], rcx
-
-
+			mov [TokenBuffer+rax], rcx
+			inc rax
+			mov [TBufPos], rax
 			ret
 
     Equal:
+            		mov rax, [TBufPos]
 			mov rcx, T_EQUALS
-			mov [TokenBuffer], rcx
+			mov [TokenBuffer+rax], rcx
+			inc rax
+			mov [TBufPos], rax
 			ret
 
 	Tilde:
+			mov rax, [TBufPos]
 			mov rcx, T_TILDE
-			mov [TokenBuffer], rcx
+			mov qword[TokenBuffer+rax], rcx
+			inc rax
+			mov [TBufPos], rax
 			ret
 
 
 
 	MemPointer:
+			mov rax, [TBufPos]
 			mov rcx, T_MEM_POINTER
-			mov [TokenBuffer], rcx
+			mov [TokenBuffer+rax], rcx
+			inc rax
+			mov [TBufPos], rax
 			ret
 	ToSign:
+	        mov rax, [TBufPos]
 			mov rcx, T_TO
 			mov [TokenBuffer], rcx
+
+			inc rax
+			mov [TBufPos], rax
 			ret
 	ArrayLBrack:
+
+			mov rax, [TBufPos]
 			mov rcx, T_ARRAY_OPEN
-			mov [TokenBuffer], rcx
+			mov [TokenBuffer+rax], rcx
+			inc rax
+			mov [TBufPos], rax
 			ret
 	ArrayRBrack:
+			
 			mov rcx, T_ARRAY_CLOSE
 			mov [TokenBuffer], rcx
 			ret
@@ -277,14 +349,8 @@ _OpFound:
 						mov [TokenBuffer], rcx
 						ret
 
-	Sync:
-						mov rcx, T_SYNC
-						mov [TokenBuffer], rcx
-						ret
-	Sysend:
-			mov rcx, T_SYSEND
-			mov [TokenBuffer], rcx
-			ret
+
+
 
 	Return:
 				mov rcx, T_RETURN
@@ -295,10 +361,6 @@ _OpFound:
 				mov [TokenBuffer], rcx
 				ret
 
-	LoopCall:
-				mov rcx, T_LOOP
-				mov [TokenBuffer], rcx
-				ret
 
 	For:
 				mov rcx, T_FOR
@@ -498,17 +560,13 @@ _DefineKeyword: ; jumped to by _IterScanner
 		je Division
 
 
-		mov rax, K_Sync
-		cmp rcx, rax
-		je Sync
+
 
 		mov rax, K_Mod
 		cmp rcx, rax
 		je Modulo
 
-		mov rax, K_Sysend
-		cmp rcx, rax
-		je Sysend
+
 
 		mov rax, K_Ret
 		cmp rcx, rax
@@ -518,9 +576,7 @@ _DefineKeyword: ; jumped to by _IterScanner
 		cmp rcx, rax
 		je KRepeat
 
-		mov rax, K_Loop
-		cmp rcx, rax
-		je LoopCall
+
 
 		mov rax, K_For
 		cmp rcx, rax

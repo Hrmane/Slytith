@@ -4,76 +4,73 @@ section .data
     ;Arithmetic operations
     ;**********************************************
 
-      T_PLUS equ "add"
-      T_MINUS equ"sub"
-      T_DIV equ "division"
-      T_MUL equ "mul"
-      T_MOD equ "mod"
-      T_INCREMENT equ "++"
-      T_DECREMENT equ "--"
+      T_PLUS equ "add "
+      T_MINUS equ"sub "
+      T_DIV equ "div "
+      T_MUL equ "mul "
+      T_MOD equ "mod "
+      T_INCREMENT equ "++ "
+      T_DECREMENT equ "-- "
     
 
     ;***********************************************
     ;Logical operations
     ;***********************************************
 
-      T_ICT equ"ICT" 
-      T_ALTERN equ "ALT"
-      T_OR equ"OR"
-      T_AND equ"AND"
-      T_GREATER equ"GRE"
-      T_LESS equ"LES"
-      T_EQUAL_TO equ"EQU"
-      T_NOT_EQUAL equ"NEQUAL"
-      T_EQUAL_GREATER equ"EGREAT"
-      T_EQUAL_LESS equ"ELESS"
+      T_ICT equ"ICT "
+      T_ALTERN equ "ALT "
+      T_OR equ"OR "
+      T_AND equ"AND "
+      T_GREATER equ"GRE "
+      T_LESS equ"LES "
+      T_EQUAL_TO equ"EQU "
+      T_NOT_EQUAL equ"NEQUAL "
+      T_EQUAL_GREATER equ"EGREAT "
+      T_EQUAL_LESS equ"ELESS "
     
     ;**************************************************
     ;General Purpose
     ;**************************************************
  
       
-      T_TO equ "TO"      
-      T_ASSIGNMENT equ"ASSIGN"
-      T_DECLARE equ"DECLARE"
-      T_DIRDIV equ"DIR-DIV"
-      T_ELEMENT equ "ELEMENT"
-      T_RES equ "RES"
-      T_MUTE equ "MUTE"
-      T_IMMUTE equ "IMMUT"
-      T_VSET equ "VSET"
-      T_NOTYPE equ "NOTYPE"
-      T_ARGARROW equ "ARGARROW" 
-      T_OPENFUNC equ "OPENFUNC"
-      T_CLOSEFUNC equ "CLOSBLK"
-      T_SYNC equ "SYNC"
-      T_SYSEND equ "SYSEND"
-      T_RETURN equ "RETURN"
-      T_REPEAT equ "REPEAT"
-      T_LOOP equ "LOOP"
-      T_FOR equ "FOR"
-      T_FOREACH equ "FOREACH"
+      T_TO equ "TO "
+      T_ASSIGNMENT equ"ASSIGN "
+      T_DECLARE equ"DECLARE "
+      T_DIRDIV equ"DIR-DIV "
+      T_ELEMENT equ "ELEMENT "
+      T_RES equ "RES "
+      T_MUTE equ "MUTE "
+      T_IMMUTE equ "IMMUT "
+      T_VSET equ "VSET "
+      T_NOTYPE equ "NOTYPE "
+      T_ARGARROW equ "ARGAR "
+      T_OPENFUNC equ "OFUNC "
+      T_CLOSEFUNC equ "CLOSBLK "
+      T_RETURN equ "RETURN "
+      T_REPEAT equ "REPEAT "
+      T_FOR equ "FOR "
+      T_FOREACH equ "FOREACH "
 
     ;*******************************************************
     ;                       OPERATORS
     ;*******************************************************
-      T_DIR_DIV equ "DIR-DIV"
-      T_MACRO_DEFINE equ "MACRO"
-      T_MEM_POINTER equ "POINTER"
-      T_DECIMAL_POINT equ"FlPOINT"
-      T_SEMICOLON equ"SCOLON"
-      T_OPEN_PAREN equ"OPAREN"
-      T_CLOSE_PAREN equ"CPAREN"
-      T_OPEN_FUNC equ"OFUNC"
-      T_CLOSE_FUNC equ"CFUNC"
-      T_ARRAY_OPEN equ "ARR_L"
-      T_ARRAY_CLOSE equ "ARR_R"
-      T_LNCOM equ"COMMENT"
-      T_MULTLNCOM_START equ"COM-S"
-      T_MULTLNCOM_END equ"COM-E"
-      T_COMMA equ "COMMA"
-      T_EQUALS equ "EQU"
-      T_TILDE equ "TILDE"
+      T_DIR_DIV equ "DIR-DIV "
+      T_MACRO_DEFINE equ "MACRO "
+      T_MEM_POINTER equ "POINTER "
+      T_DECIMAL_POINT equ"FlPOINT "
+      T_SEMICOLON equ"SCOLON "
+      T_OPEN_PAREN equ"OPAREN "
+      T_CLOSE_PAREN equ"CPAREN "
+      T_OPEN_FUNC equ"OFUNC "
+      T_CLOSE_FUNC equ"CFUNC "
+      T_ARRAY_OPEN equ "ARR_L "
+      T_ARRAY_CLOSE equ "ARR_R "
+      T_LNCOM equ"COMMENT "
+      T_MULTLNCOM_START equ"COM-S "
+      T_MULTLNCOM_END equ"COM-E "
+      T_COMMA equ "COMMA "
+      T_EQUALS equ "EQU "
+      T_TILDE equ "TILDE "
     
     ;******************************************************
     ; Data types
@@ -81,30 +78,30 @@ section .data
    
 
    
-     TYPE_BYTE equ"BYTE"
-     TYPE_CHAR equ"CHAR"
-     TYPE_SNUM equ"SHORT" ;SHORT
-     TYPE_INT equ"INT"
-     TYPE_LNUM equ"LONG"
-     TYPE_FLOAT64 equ"FLOAT-64"
-     TYPE_FLOAT32 equ "FLOAT-32"
-     TYPE_BOOL equ "T-F"
-     TYPE_STR equ "STR"
-     T_MOVINTO equ "STORE"
-     TYPE_BIT equ "BIT"
-     TYPE_NIBBLE equ "NIBBLE"
-     TYPE_QWORD equ "QWORD"
-     TYPE_DWORD equ "DWORD"
-     TYPE_WORD equ "WORD"
+     TYPE_BYTE equ"BYTE "
+     TYPE_CHAR equ"CHAR "
+     TYPE_SNUM equ"SHORT " ;SHORT
+     TYPE_INT equ"INT "
+     TYPE_LNUM equ"LONG "
+     TYPE_FLOAT64 equ"F-64 "
+     TYPE_FLOAT32 equ "F-32 "
+     TYPE_BOOL equ "T-F "
+     TYPE_STR equ "STR "
+     T_MOVINTO equ "STORE "
+     TYPE_BIT equ "BIT "
+     TYPE_NIBBLE equ "NIBBLE "
+     TYPE_QWORD equ "QWORD "
+     TYPE_DWORD equ "DWORD "
+     TYPE_WORD equ "WORD "
      
      
 
   ;********************************************************
   ; Literals
   ;*********************************************************
-      T_INTLIT equ"INT-LIT"
-      T_BOOL equ"BOOL-LIT"
-      T_STRLIT equ "STR-LIT"
+      T_INTLIT equ"INT-LIT "
+      T_BOOL equ"BOO-LIT "
+      T_STRLIT equ "STR-LIT "
 
 ;*********************************************************
 ;							Others

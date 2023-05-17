@@ -8,39 +8,12 @@
 
 section .text
 
-%macro print 0
-    mov rax, 1
-    mov rdi, 1
-    mov r9, Cycle
-    mov rdx, 123
-    syscall
-    %endmacro
+_AddToCbuf_GrabChar:
+    mov bl, [CurrentChar]
+    mov [AssertionBuffer], bl
+    call _GrabChar
 
 
-
-
-Lex: ;Opens, reads, and closes the file
-	;Open the file	
-	mov rax, 2
-	mov rdi, FileName
-	xor rdx, rdx
-	xor r9, r9
-	syscall
-	mov qword [FD], rax
-
-	;Read File
-	mov rax,0
-	mov rdi,qword [FD]
-	mov r9, InputBuffer
-	mov rdx, 1024
-	syscall
-
-	;Close File
-	mov rax, 6
-	mov rdi, [FD]
-	syscall
-	
-	jmp _GrabChar
 
 
 _Output:
@@ -56,7 +29,17 @@ _Output:
     mov rdx, 20000
     syscall
 
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, nln
+    mov rdx, 1
+    syscall
+
     call END
+
+_Inc_grab:
+    call _NextChar
+    jmp _GrabChar
 
 _GrabChar:
     mov r9, InputBuffer
@@ -66,9 +49,16 @@ _GrabChar:
 	cmp bl, 0
     je _Output
 
-    mov [CurrentChar], bl
+    mov al, Whitespace
+    cmp al, bl
+    je _Inc_grab
+
+    mov byte[CurrentChar], bl
+
+
 
 	call _NextChar
+
 
 	jmp IndicatorsCmp
 
@@ -84,8 +74,8 @@ _NextChar:
 section .data
     Output_txt: db "Outputted Lexemes >> ",0
     otxtLen equ $-Output_txt
-	NullTerm db 0
-	InputBuffer db "#",0
+	nln db 0ah
+	InputBuffer db "|+",0
 	Cycle: db "Cycle completed", 0ah ,0
 section .bss
 
@@ -96,6 +86,7 @@ section .bss
 	FileName resb 64
 	FD resb 32;FileDes
 	CurrentChar resb 1
+	TBufPos resb 4
 	
 
 

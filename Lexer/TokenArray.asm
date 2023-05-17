@@ -10,10 +10,10 @@ section .bss
 
 section .data
 
-        ID: db "Identifier"
+        ID: db "Identifier", 0ah
         Cluster_Token: db "dword","bit","nibble","word","qword","res","mute","immute","vset","notype","->","<<",">>","element", "byte","char","snum","int","lnum","fltt","flst","bool","str","store","ict","altern","dec","add","subt","div","sync","assert","sysend","ret","repeat","loop","for",0
       ;  CTLength equ $-Cluster_Token
-        Indicators: db '|','&','>','<','.',';','=','~','+','-','%','!','@', '[',']', " ", '/', '^', 0
+        Indicators: db "|",'&','>','<','.',';','=','~','+','-','%','!','@', '[',']', " ", '/', '^', 0
         ;IndicatorsLength equ $-Indicators
         Digits: db '1','2','3','4','5','6','7','8','9','0', 0
       ; DigitsLength $-Digits
@@ -24,12 +24,14 @@ section .data
 section .text
 
     CheckAssertBuffer:
+
             mov rax, AssertionBuffer
             mov rcx, Cluster_Token
             mov r8, [TokenIndex]
             mov rdx, [rax + rcx]
             cmp rdx, 0
             je _GrabChar
+
 
             cmp rax, rcx
             jmp _DefineKeyword
@@ -72,11 +74,7 @@ section .text
         jmp DigitsCmp
     DigitsCmp:
 
-        mov rax, 1
-        mov rdi, 1
-        mov rsi, Cycle2
-        mov rdx, clen2
-        syscall
+
 
         mov rcx, Digits
         mov rax, [DigitIndex]
@@ -117,18 +115,17 @@ section .text
         jmp CheckAssertBuffer
 
   _zero_index_DCMP:
+
+
     mov qword[Index], 000000000000000000000000
     je DigitsCmp
 
   IndicatorsCmp:
 
-        mov rax, 1
-        mov rdi,1
-        mov rsi, Cycle
-        mov rdx, 29
-        syscall
 
-         mov bl, [CurrentChar]
+
+         ;mov bl, [CurrentChar]
+
           xor al,al
           mov al, Comments
           cmp bl, al
@@ -142,34 +139,38 @@ section .text
 
 
 
+
          mov rcx, Indicators
             mov rax, [Index]
-            mov bl, byte[rcx + rax]
-            cmp bl, 0
+            mov dl, byte[rcx + rax]
+
+            cmp dl, 0
             je _zero_index_DCMP
 
 
 
 
-            mov byte[curr], bl
-            mov bl, [curr]
-            mov al, [CurrentChar]
+            mov byte[curr], dl
 
-            mov dl, Whitespace
+
+
+            ;mov al, [CurrentChar]
+
+            ;mov dl, Whitespace
 
             call IncArrayPos
-            cmp al, dl
-            je _zero_index_DCMP
+            ;cmp al, dl
+            ;je _zero_index_DCMP
 
 
-
-            cmp al, bl
-            je _OpFound
+            mov dl, [curr]
+            cmp bl, dl
+            je _OChain
 
 
             jmp IndicatorsCmp
 
-            ret
+
 
 
 

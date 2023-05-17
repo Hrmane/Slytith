@@ -94,6 +94,12 @@ section .text
 
 
     CommentState:
+
+    mov rax, 1
+            mov rdi,1
+            mov rsi, Cycle
+            mov rdx, 29
+            syscall
         mov rcx, [InPointer]
         mov rax, [InputBuffer]
         mov al, byte[rax + rcx]
@@ -102,6 +108,7 @@ section .text
         ;Determine the end of the comment by another # symbol
         cmp al, bl
         je _GrabChar
+
 
         call _NextChar
 
