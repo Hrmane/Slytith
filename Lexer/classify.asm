@@ -1,18 +1,53 @@
 ;classify  
 %include "Lexer/Tokens.asm"
 ;%include "Lexer/Scanner.asm"
-
+section .bss
+    TbufLen resb 16
+    TbufIndex resb 16
 section .data
 
 
     Cycle2: db "<<>>", 0ah ,0
     clen2 equ $-Cycle2
-
-
-
     here: db "Here", 0ah
-
+    NullstrByte db "0"
 section .text
+
+    _GrabTBufLength:
+        mov rcx, [TbufLen]
+        mov rax, [TBufIndex]
+        mov al, byte[TokenBuffer + rax]
+        cmp al, 0
+        je _AddTokenAtIndex
+        inc rax
+        inc rcx
+        jmp _GrabTBufLength
+
+    _AssertTBufEmpty:
+        mov al, byte[TokenBuffer + 0]
+        cmp al, 0
+        je _AddTokAtFirstIndex
+        jmp _GrabTBufLength
+    _ClearTBufIn:
+        mov rcx, [TbufIndex]
+        dec rcx
+        cmp rcx, 0000000000000000
+        je _GrabChar
+        jmp _ClearTBufIn
+    _AddTokAtFirstIndex:
+        mov rcx, [TbufIndex]
+        mov rax, [TbufLen]
+        mov bl, byte[rsi + rcx]
+        mov al, [NullstrByte]
+        cmp bl, al
+        je _GrabChar
+
+        mov byte[TokenBuffer + rax], bl
+        inc rcx
+        inc rax
+        jmp _AddTokAtFirstIndex
+
+
 ;/////////////////////////////////////////////////////////////////
 ;								OPERATORS
 ;/////////////////////////////////////////////////////////////////

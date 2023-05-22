@@ -116,9 +116,11 @@ section .text
 
   _zero_index_DCMP:
 
-
-    mov qword[Index], 000000000000000000000000
+    mov rdx, [Index]
+    dec rdx
+    cmp rdx, 000000000000000000000000
     je DigitsCmp
+    jmp _zero_Index_DCMP
 
   IndicatorsCmp:
 

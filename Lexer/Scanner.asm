@@ -80,8 +80,8 @@ section .data
 section .bss
 
     InPointer resb 124
-	TokenBuffer resb 20000
-	;InputBuffer resb 128
+	TokenBuffer resb 9192
+	InputBuffer resb 9192
 	AssertionBuffer resb 64
 	FileName resb 64
 	FD resb 32;FileDes

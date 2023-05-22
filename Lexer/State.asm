@@ -17,7 +17,7 @@ section .text
 
 
     StringState:
-        ;To be called after a double quotation is found and will stop till another is found
+        ;To be called after a double 3quotation is found and will stop till another is found
         ;first get the current POSITION for the character then compare to a quote
        
         mov rcx, [InPointer]
