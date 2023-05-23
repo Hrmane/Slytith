@@ -98,7 +98,6 @@ section .text
         je IntState
 
 
-
         cmp al, bl
         jne DigitsCmp
 

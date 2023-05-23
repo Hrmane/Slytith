@@ -15,7 +15,6 @@ section .text
     ;All of the code below are to be called after a specific cindition is met
     ;e.g, 
 
-
     StringState:
         ;To be called after a double 3quotation is found and will stop till another is found
         ;first get the current POSITION for the character then compare to a quote

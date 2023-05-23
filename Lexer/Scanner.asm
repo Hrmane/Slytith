@@ -64,7 +64,6 @@ _GrabChar:
 
 
 
-
 _NextChar:
 	mov eax, [InPointer] ;The Position pointer we need to grab the charater out of the string
 	inc eax
