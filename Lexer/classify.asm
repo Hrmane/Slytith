@@ -15,14 +15,25 @@ section .text
 
     _GrabTBufLength:
         mov rcx, [TbufLen]
-        mov rax, [TBufIndex]
+        mov rax, [TbufIndex]
         mov al, byte[TokenBuffer + rax]
         cmp al, 0
         je _AddTokenAtIndex
         inc rax
         inc rcx
         jmp _GrabTBufLength
+    _AddTokenAtIndex:
+        mov rdx,[TbufIndex]
+        mov rax, [TbufLen]
+        mov al, byte[rsi+rax]
+        mov bl, [NullstrByte]
+        cmp al, bl
+        je _ClearTBufIn
 
+        mov byte[TokenBuffer + rax], al
+        inc rdx
+        inc rax
+        jmp _AddTokenAtIndex
     _AssertTBufEmpty:
         mov al, byte[TokenBuffer + 0]
         cmp al, 0

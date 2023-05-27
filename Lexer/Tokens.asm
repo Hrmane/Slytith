@@ -65,7 +65,6 @@ section .data
       T_CLOSE_FUNC equ"CFUNC 0"
       T_ARRAY_OPEN equ "ARR_L 0"
       T_ARRAY_CLOSE equ "ARR_R 0"
-      T_LNCOM equ"COMMENT 0"
       T_MULTLNCOM_START equ"COM-S 0"
       T_MULTLNCOM_END equ"COM-E 0"
       T_COMMA equ "COMMA 0"
@@ -99,9 +98,8 @@ section .data
   ;********************************************************
   ; Literals
   ;*********************************************************
-      T_INTLIT equ"INT-LIT 0"
-      T_BOOL equ"BOO-LIT 0"
-      T_STRLIT equ "STR-LIT 0"
+      T_INTLIT equ"INT-L 0"
+      T_STRLIT equ "STR-L 0"
 
 ;*********************************************************
 ;							Others

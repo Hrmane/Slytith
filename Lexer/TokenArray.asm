@@ -119,7 +119,7 @@ section .text
     dec rdx
     cmp rdx, 000000000000000000000000
     je DigitsCmp
-    jmp _zero_Index_DCMP
+    jmp _zero_index_DCMP
 
   IndicatorsCmp:
 

@@ -65,22 +65,22 @@ _GrabChar:
 
 
 _NextChar:
-	mov eax, [InPointer] ;The Position pointer we need to grab the charater out of the string
-	inc eax
-	mov [InPointer], eax
+	mov rax, [InPointer] ;The Position pointer we need to grab the charater out of the string
+	inc rax
+	mov [InPointer], rax
 	ret
 
 section .data
     Output_txt: db "Outputted Lexemes >> ",0
     otxtLen equ $-Output_txt
 	nln db 0ah
-	InputBuffer db "|+",0
+	InputBuffer db "|]",0
 	Cycle: db "Cycle completed", 0ah ,0
 section .bss
 
     InPointer resb 124
 	TokenBuffer resb 9192
-	InputBuffer resb 9192
+	;InputBuffer resb 9192
 	AssertionBuffer resb 64
 	FileName resb 64
 	FD resb 32;FileDes
