@@ -9,9 +9,3 @@ element Main -> str Buffer<<
 	>>
 
 >>
-section .text
-   ok:
-   mov bl, '1'
-   mov al, '1'
-    cmp bl,al
-    ret

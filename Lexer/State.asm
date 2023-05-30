@@ -1,5 +1,5 @@
-;%include "Lexer/Scanner.asm"
-%include "Lexer/Tokens.asm"
+;include "Lexer/Scanner.asm"
+;%include "Lexer/Tokens.asm"
 
 section .bss
     StringBuffer resq 1000
@@ -13,12 +13,12 @@ section .data
 section .text
 
     ;All of the code below are to be called after a specific cindition is met
-    ;e.g, 
+    ;e.g,
 
     StringState:
         ;To be called after a double 3quotation is found and will stop till another is found
         ;first get the current POSITION for the character then compare to a quote
-       
+
         mov rcx, [InPointer]
         mov rbx, [InputBuffer]
        mov al, byte[rbx + rcx]
@@ -26,14 +26,14 @@ section .text
         cmp al, dl
         je AddStrToBuffer
         ;if the character isnt a quote, add it to the string buffer
-        
+
         mov [StringBuffer], al
 
         call _NextChar
         jmp StringState
 
     AddStrToBuffer:
-    
+
         mov rax, StringLiteralToken
         mov [TokenBuffer], rax
         mov rcx, StringBuffer
@@ -44,9 +44,9 @@ section .text
         mov al, byte [O_DecimalPoint]
         mov [IntBuffer], al
         jmp FloatState
-    
+
     FloatState:
-       
+
         mov rcx, [InPointer]
         mov rdx, [InputBuffer]
         mov bl, byte[rdx + rcx]
@@ -63,7 +63,7 @@ section .text
         mov rax, [IntBuffer]
         mov [TokenBuffer], rax
         jmp _GrabChar
-        
+
 
     IntState:
 
@@ -76,7 +76,7 @@ section .text
         cmp al, bl
         je IntState
 
-        mov al, O_DecimalPoint
+        mov al, [O_DecimalPoint]
         cmp al, bl
         je AddDecPoint
         jmp AddNumberToBuffer
@@ -112,5 +112,5 @@ section .text
         call _NextChar
 
         jmp CommentState
-    
-       
+
+

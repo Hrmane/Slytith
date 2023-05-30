@@ -49,7 +49,7 @@ _GrabChar:
 	cmp bl, 0
     je _Output
 
-    mov al, Whitespace
+    mov al, [Whitespace]
     cmp al, bl
     je _Inc_grab
 

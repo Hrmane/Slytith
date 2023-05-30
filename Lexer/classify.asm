@@ -1,9 +1,10 @@
-;classify  
-%include "Lexer/Tokens.asm"
+;classify
+;%include "Lexer/Tokens.asm"
 ;%include "Lexer/Scanner.asm"
 section .bss
     TbufLen resb 16
-    TbufIndex resb 16
+    TokIndex resb 16
+    tchar resb 1
 section .data
 
 
@@ -15,7 +16,7 @@ section .text
 
     _GrabTBufLength:
         mov rcx, [TbufLen]
-        mov rax, [TbufIndex]
+        mov rax, [TokIndex]
         mov al, byte[TokenBuffer + rax]
         cmp al, 0
         je _AddTokenAtIndex
@@ -23,41 +24,72 @@ section .text
         inc rcx
         jmp _GrabTBufLength
     _AddTokenAtIndex:
-        mov rdx,[TbufIndex]
-        mov rax, [TbufLen]
-        mov al, byte[rsi+rax]
-        mov bl, [NullstrByte]
-        cmp al, bl
-        je _ClearTBufIn
+      mov rsi, [rsp + 8]
+              mov r8, [TokIndex] ; The position of the token that is in RSI
+              mov r9, [TbufLen] ; the positon of the tokens inside of TokenBuffer
 
-        mov byte[TokenBuffer + rax], al
-        inc rdx
-        inc rax
+              mov cl, byte[rsi + r8]; grab character at index in r8
+              mov al, [NullstrByte]
+              mov [tchar],cl
+
+              cmp al, cl
+              je _ClearTBI
+
+              mov [tchar], cl
+
+
+
+              mov byte[TokenBuffer + r9], cl
+              inc word[TokIndex]
+              inc word[TbufLen]
         jmp _AddTokenAtIndex
     _AssertTBufEmpty:
         mov al, byte[TokenBuffer + 0]
         cmp al, 0
         je _AddTokAtFirstIndex
         jmp _GrabTBufLength
-    _ClearTBufIn:
-        mov rcx, [TbufIndex]
-        dec rcx
-        cmp rcx, 0000000000000000
-        je _GrabChar
-        jmp _ClearTBufIn
-    _AddTokAtFirstIndex:
-        mov rcx, [TbufIndex]
-        mov rax, [TbufLen]
-        mov bl, byte[rsi + rcx]
-        mov al, [NullstrByte]
-        cmp bl, al
-        je _GrabChar
+    _ClearTBI:
 
-        mov byte[TokenBuffer + rax], bl
-        inc rcx
-        inc rax
+
+        mov rcx, [TokIndex]
+        dec rcx
+        cmp word[rcx], 0000000000000000
+        je _GrabChar
+        jmp _ClearTBI
+    _AddTokAtFirstIndex:
+
+        mov rsi, [rsp + 8]
+        mov r8, [TokIndex] ; The position of the token that is in RSI
+        mov r9, [TbufLen] ; the positon of the tokens inside of TokenBuffer
+
+        mov cl, byte[rsi + r8]; grab character at index in r8
+        mov al, 0
+        mov [tchar],cl
+
+        mov rax, 1
+        mov rdi, 1
+        mov rsi, tchar
+        mov rdx, 1
+        syscall
+
+        cmp al, cl
+        je _ClearTBI
+
+        mov [tchar], cl
+
+
+
+        mov byte[TokenBuffer + r9], cl
+        inc r8
+        inc r9
+        mov [TokIndex], r8
+        mov [TbufLen], r9
         jmp _AddTokAtFirstIndex
 
+    _IncTBL:
+        mov rcx, [TbufLen]
+        inc rcx
+        jmp _ClearTBI
 ;/////////////////////////////////////////////////////////////////
 ;								OPERATORS
 ;/////////////////////////////////////////////////////////////////
@@ -93,66 +125,66 @@ _OpFound:
         jmp _AddToCbuf_GrabChar
 
     _CTO:
-        mov dl, O_TO
+        mov dl, [O_TO]
     		cmp al, dl
     		je ToSign
     		ret
 
     _CMA:
-    		mov dl, O_DefMacro
+    		mov dl, [O_DefMacro]
     		cmp al, dl
     		je DefMacro
             ret
 
     _CLT:
-    		mov dl, O_LessThan
+    		mov dl, [O_LessThan]
     		cmp al, dl
     		je LessThan
             ret
     _CGT:
-    		mov dl, O_GreaterThan
+    		mov dl, [O_GreaterThan]
     		cmp al, dl
     		je GreaterThan
             ret
 
     _CDP:
-    		mov dl, O_DecimalPoint
+    		mov dl, [O_DecimalPoint]
     		cmp al, dl
     		je DecPoint
             ret
     _CSE:
-    		mov dl, O_Semicolon
+    		mov dl, [O_Semicolon]
     		cmp al, dl
     		je Semicolon
             ret
 
     _CES:
-    		mov dl, O_EqualSign
+    		mov dl, [O_EqualSign]
     		cmp al, dl
     		je Equal
             ret
     _CTI:
-    		mov dl, O_Tilde
+    		mov dl, [O_Tilde]
     		cmp al, dl
     		je Tilde
             ret
 
     _CMP:
-    		mov dl, O_MemPointer
+    		mov dl, [O_MemPointer]
     		cmp al, dl
     		je MemPointer
             ret
     _CAO:
-    		mov dl, O_ArrayOpen
+    		mov dl, [O_ArrayOpen]
     		cmp al, dl
     		je ArrayLBrack
     		ret
     _CAC:
-    		mov dl, O_ArrayClose
+    		mov dl, [O_ArrayClose]
     		cmp al, dl
     		je ArrayRBrack
             ret
-	
+
 
 
 
@@ -256,12 +288,9 @@ _OpFound:
 			mov [TBufPos], rax
 			ret
 	ToSign:
-	        mov rax, [TBufPos]
-			mov rcx, T_TO
-			mov [TokenBuffer], rcx
-
-			inc rax
-			mov [TBufPos], rax
+	        mov rsi, T_TO
+	        push rsi
+	        call _AssertTBufEmpty
 			ret
 	ArrayLBrack:
 
@@ -272,7 +301,7 @@ _OpFound:
 			mov [TBufPos], rax
 			ret
 	ArrayRBrack:
-			
+
 			mov rcx, T_ARRAY_CLOSE
 			mov [TokenBuffer], rcx
 			ret
@@ -635,22 +664,12 @@ _DefineKeyword: ; jumped to by _IterScanner
 		cmp rcx, rax
 		je Multiply
 
-		;mov rax, K_True
-		;cmp rcx, rax
-		;je KTrue
-        ;
-		;mov rax, K_False
-		;cmp rcx, rax
-		;je KFalse
-
-
-
 
 		xor rcx,rcx ; clear the buffer
 		ret
-		
-	
 
 
 
-	
+
+
+

@@ -49,14 +49,17 @@ section .text
         ret
 
     ClearDIn_BackToGrab:
-      mov qword[DigitIndex], 0000000000000
-      jmp _GrabChar
+      mov rax, [DigitIndex]
+      dec rax
+      cmp rax, 0000000000000
+      je _GrabChar
+      jmp ClearDIn_BackToGrab
 
     ClearTIn_BackToGrab:
       mov qword[TokenIndex], 0000000000000000000000000000000000000000
       jmp _GrabChar
 
-    
+
     Inc_t:
         mov rax, [TokenIndex]
         inc rax
@@ -128,7 +131,7 @@ section .text
          ;mov bl, [CurrentChar]
 
           xor al,al
-          mov al, Comments
+          mov al, [Comments]
           cmp bl, al
           je CommentState
 

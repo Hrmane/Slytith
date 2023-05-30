@@ -32,14 +32,6 @@ section .text
         mov rdx, 100
         syscall
 
-        
-
-
-       
-
-        
-
-
 section .bss
     ArtFileName resb 64
     art resb 100

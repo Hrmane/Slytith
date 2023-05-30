@@ -1,5 +1,5 @@
 ;main
-%include "Lexer/Tokens.asm"
+;%include "Lexer/Tokens.asm"
 %include "Lexer/Scanner.asm"
 ;%include "ProcArgument/CompCli.asm"
 section .data
