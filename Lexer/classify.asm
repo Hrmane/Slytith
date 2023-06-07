@@ -57,34 +57,20 @@ section .text
         je _GrabChar
         jmp _ClearTBI
     _AddTokAtFirstIndex:
-
-        mov rsi, [rsp + 8]
-        mov r8, [TokIndex] ; The position of the token that is in RSI
-        mov r9, [TbufLen] ; the positon of the tokens inside of TokenBuffer
-
-        mov cl, byte[rsi + r8]; grab character at index in r8
-        mov al, 0
-        mov [tchar],cl
-
-        mov rax, 1
-        mov rdi, 1
-        mov rsi, tchar
-        mov rdx, 1
-        syscall
-
-        cmp al, cl
+        mov rcx, [TokIndex]
+        mov al, byte[rsi + rcx]
+        cmp al, 0
         je _ClearTBI
-
-        mov [tchar], cl
-
-
-
-        mov byte[TokenBuffer + r9], cl
-        inc r8
+        mov r9, [TbufLen]
+        mov byte[TokenBuffer + r9],al
         inc r9
-        mov [TokIndex], r8
-        mov [TbufLen], r9
+        mov r9, [TbufLen]
+        inc rcx
+        mov [TokIndex], rcx
+
         jmp _AddTokAtFirstIndex
+
+
 
     _IncTBL:
         mov rcx, [TbufLen]
