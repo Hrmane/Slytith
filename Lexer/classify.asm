@@ -50,21 +50,29 @@ section .text
         jmp _GrabTBufLength
     _ClearTBI:
 
-
+        mov rax, 1
+                        mov rdi, 1
+                        mov rsi, Cycle2
+                        mov rdx, clen2
+                        syscall
         mov rcx, [TokIndex]
         dec rcx
         cmp word[rcx], 0000000000000000
         je _GrabChar
         jmp _ClearTBI
     _AddTokAtFirstIndex:
+
         mov rcx, [TokIndex]
         mov al, byte[rsi + rcx]
+
         cmp al, 0
         je _ClearTBI
+        mov [tchar] , al
+
         mov r9, [TbufLen]
         mov byte[TokenBuffer + r9],al
         inc r9
-        mov r9, [TbufLen]
+        mov  [TbufLen] ,r9
         inc rcx
         mov [TokIndex], rcx
 
@@ -274,9 +282,9 @@ _OpFound:
 			mov [TBufPos], rax
 			ret
 	ToSign:
-	        mov rsi, T_TO
-	        push rsi
-	        call _AssertTBufEmpty
+	        lea rsi, [T_TO]
+
+	        call _AddTokAtFirstIndex
 			ret
 	ArrayLBrack:
 

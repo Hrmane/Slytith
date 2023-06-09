@@ -74,7 +74,7 @@ section .data
     Output_txt: db "Outputted Lexemes >> ",0
     otxtLen equ $-Output_txt
 	nln db 0ah
-	InputBuffer db "|]",0
+	InputBuffer db "|",0
 	Cycle: db "Cycle completed", 0ah ,0
 section .bss
 
